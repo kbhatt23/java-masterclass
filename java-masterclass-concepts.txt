@@ -1,0 +1,42 @@
+- keywords are oob words/commands that have meaning in java/any other programming language
+- They explain things to java compilers as to what should be done in code, combination of such keywords and identifiers become code
+- amazon have created free version of java 8 and above called correto as java 8 and above are not free for commercial usage
+- access modifer -> how external classes/code can access our class/method/resource(variables)
+- class can have only public or default access modifier, can not be private or protected
+- keywords and identifiers in java is case sensitive
+- While running using the main method String... vararg or String[] both works , but apart from this no other combinations works:
+	public static void main(String... args)   or public static void main(String[] args) 
+- variable are defined with a name and data type, the vlaue will be kpt in RAM meory based on data type
+	-> the variable can be used to use the value without thinkning how data i saved in memory
+
+- String s= messi creates one object in string constant pool usable for other variables, 
+- String s= new String("messi") creates one object in constant pool and another object that points to this constant pool
+
+- Wrapper classes are object kind behaviour of prinitive data types -> mostly used in generics and collections
+- Autmoatic boxing and unbxoing happens
+- Down side are below:
+	a. if we convert int ot INteger aumatic boxing happens , but it consumes memory
+	b. It is ummutable so if we modify its value a enw object is created and assinged to variabl.
+	c. we can do ++ --  operator but for that it unwraps the Integer object ot prmitive modidfy the primitive then box(creat enew object) to Integer object
+- If we store more than max or lesser than min vlaue of int it gives compilation error, however we can force type cast that bust it and cause underflow
+	-> no runtime or compilation error in that case but it just try to convert it using overflow or underflow
+- JVM allows even _ in between and bypass these _ chars by using Java 7 and higher
+- by defaut int/int gives double -> however we cna type cast to int whihc just ignore decimcal places and od not roundoff
+	-> for round off using Mat.roundoff funtcion or use floor or cieling
+- floor will give minimum non doulbe value and ceil will give maximum next whole value
+	2.2 floor will give 2 and ceil will give 3 , round will give 2 , round for 2.6 will give 3
+- char is 2 byte meaning 16 bit and hence int can hold it without typecasting, but convert the char to ascii value
+- int is default literal for whole number and double is default literal value for decimal numbers
+- so even if we define a variable to some data type -> the value literal is always pointing to default one 
+- double is default fractional data type and hence in float declaration we need to add f at the end on literal
+- double can store more bigger values(64 bit) and also during division it stores more characters after ., meaning more presecision
+- arithematic operations is faster as hardware level supported chips are build like that
+- In integer and double literal we can add _ in between and compiler ignores them as they are added for readability
+- BigDecimal is more precise and have a lot of supporting methods then float and double both
+- char can store only single charachter and that can be number, special characther, alphabets anything and also it;s ascii value is different for case insenstivite chars
+- char is 16 bit and can be easily hold up by int variable but it converts it char to its ascii value
+- boolean size in bit is 1 bit as it can have 0 or 1 in memory -> true or false
+- max size/width of a string is the max value of integer, String is 2 byte storage in java just like char
+- + operator if used with one of the string then it always do concatenation at all level until () are used to do opeartions for other data type
+- Teranry operator can replace if else condition but it always return a vlaue in both true and flase case and hence shall always be assigned to a variable for a result value
+- + and - have same precendencce because even though we execute any operation result will be same same with division and multiplication
