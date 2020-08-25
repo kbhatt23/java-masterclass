@@ -14,5 +14,13 @@ public class HelloWorld {
 		Arrays.stream(args).forEach(System.out::println);
 		int customVariable =(23+6)*3;
 		System.out.println("customCariable "+customVariable);
+		{
+			String messi = "jai shree ram";
+			System.out.println("messi bole "+messi);
+		}
+		if(customVariable >23)
+			
+			
+			System.out.println("jai shree after a lot of whitespaces");
 	}
 }

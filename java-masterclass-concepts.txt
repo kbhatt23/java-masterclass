@@ -40,3 +40,24 @@
 - + operator if used with one of the string then it always do concatenation at all level until () are used to do opeartions for other data type
 - Teranry operator can replace if else condition but it always return a vlaue in both true and flase case and hence shall always be assigned to a variable for a result value
 - + and - have same precendencce because even though we execute any operation result will be same same with division and multiplication
+
+- Keywords are predifined words that have some meaning in a programming language , any of the keywords can not be an identifier . eg int int=23 will give error as int variable name is not possible
+- any line in java wihtout data typeis expression , eg int la =23 -> la=23 is expression , if(kal == 22) kal ==23 is expression and so 
+- Every line injava is a statment -> or a logical line as a lot of time we put enter and ame line ends in next line
+	-> basically any code that starts and end till ; comes it is a single statment
+- A white sapce is diferene bwtween keywors/identifiers  -> one or more space will mean asingle space by java compiler
+- methods are created ro reduce duplication of code and make more reusable -> future cchanges will be done at one place
+- overloading means createing a new method with same name but different method arguments/parameter - > all kind fo freedom for any method is given to this unlike overriding
+- While creating we must ensure that there should not be amehtod in same class with same name and same argument paramters
+		-> meaning just changing return type wont help in compiling if we have 2 methods with same name and same arguments
+
+- method overloading is very useful for code readability and reusabiliy
+	> we can remmeber one method name easily and based on different input arguments we can achive same functionality with idfferent inputs
+-> eg of overloading is system.out.println -? same method name but input can be string, double, int etc -? easier to remmeber
+
+-> switch case can be done only on ints, enums, strings -> can notbe used for objects -> overl all -> byte ,short ,char and int are part of ints(positive numbers)
+	Stirng swithc is added in java 7 only earlier it was int and its small types and enum only 
+
+-> in for loop if we do a break the increment stamtent will not get called, however if contiue is used the increment statetment will get called
+-< in for loop on contine increment operator gets called automatically so that index goes to next, In while loop on contiue index do not get incremented we need to do it manually
+	-> in while loop if we do not do amnual increment it will go to infinite loop
