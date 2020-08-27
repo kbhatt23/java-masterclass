@@ -61,3 +61,41 @@
 -> in for loop if we do a break the increment stamtent will not get called, however if contiue is used the increment statetment will get called
 -< in for loop on contine increment operator gets called automatically so that index goes to next, In while loop on contiue index do not get incremented we need to do it manually
 	-> in while loop if we do not do amnual increment it will go to infinite loop
+
+- > Integer.parseInt is better when we just need integer as it returns primitive type and Valueof method returns Integer object
+	-> we cna save autounboxing
+
+
+===========OOPS===================
+
+Objects : A rela life entity, in java code from one aprt interact to other using object calls,	
+	-> any real life thing also have a state and behvaiour same happens in java classes -> state -> instance vriables and methods act as behviour of object
+- Class : Class is nothing but a template that helps us how the objects will be , any object form this class will take the things(behavious and state) using class template
+- any local variable have to be initalized first before usage : int i; i+2; will give compilation erro  do like i=0; i+=2;
+- instance variable gets defaul values as they are in object heap and not in stack(local variables)
+
+Rules for constructors:
+- if no constructor is added by dev a no arg onstructor with first line as super no arg cosntrucotr call is added by compliler
+- if any constructor is added by dev compiler do not add default no arg constuctor
+- if in our constructor fisr line is automatic super no arg constructor
+	-> super or this constructor call shud be first line only in constructor
+- if super class has no default constructor then while extending in child it causes compialtion error as it looks for no arg constructor
+	-> either add no arg constructor in super or in child creat cusotmconstrucotr to call cusotm construcotr using super 
+- everytime in any constructor call goes first to super -> super till object then it comes back to the stack
+- any default value wadded in instance variable if overidden inconstructor will overrirde it
+
+- in constructor it is advised not to call another set method or another method , instead if we want to set more than one better call another constructor using this
+- this and super keywords can not be used in staic methods
+- super. can be used to call methods super(...) can be used for ocnstructor call to ssuper class this(...) local class constructor 
+- even abstract classes who we cna not instantiate at all still have constructors but interface do not have constructor
+- all classes whihc are part of object heirachy have constructors
+- we can not override static and final methods
+
+Steps in identifying static / instance blocks and constructor flow:
+- only once first the super class staitc blocks form top to down gets called then childs static blocks gets called form top to botton
+- then the instance blocks of super class gets called from top to bottom
+- then the super class cosntructor gets classed
+- child instance bloks gets called from top to bottom
+-child constructor gets called
+->----------------- Meaning that the abosliute last place whihc overrides all the values of instance variable is at the constructor leve
+	least preference is instance variable leve -> instance block leve -> construcotr level
