@@ -99,3 +99,23 @@ Steps in identifying static / instance blocks and constructor flow:
 -child constructor gets called
 ->----------------- Meaning that the abosliute last place whihc overrides all the values of instance variable is at the constructor leve
 	least preference is instance variable leve -> instance block leve -> construcotr level
+- inheritance is for is a relationship and compoistion is for has a relationship
+
+- Encapsulation :: As the name suggest it is like a capsule of different medicines
+	-> In java encapsulation means capsualtion functionality and states meanins collecting instance variable and  methods in a sinle capsule
+	this is done so that no one access or modify the instance variable directly , we can have restriction logic in methods
+	-> create instance variable private and cretat poublic methods where we can have restriction logic for mutation(set method) and accessors(get methods)
+
+- Abstraction: As the name suggest abstraction means a functionlauty which a user need not to bother how it si impolenmented 
+	-> we just create a contract using abstract class or itnerface and us e a method to get out functionality done
+	-> we need not to see how that method have implemented , so we should use interface/abstract class for reference and object can be child classes
+
+- A good coding practise is that any cahnge in a class should not affect other classes that are using it
+- encapsulation prevents this lets say our varible name is name currnetly and it is public and other calsses are accesing it directly
+	-> if we want to cahnge the variable name other classes will get compialtion issue
+	-> in encapsulation we create mutation method and we cna keep the mutation method same by changing property name
+	-> this ensures change ina  single class do not affect other class
+- benefits of encapsulation:
+	a. it can save our data to get accidnetally corrupter , in mutation class we cna have restriction logic same with get method
+	b. a change in this class wont affect other class , eg variable name change wont affect other as we an still keep set and get method as same
+- mandatory instance variables are initialized in constructor -> basic purpose
