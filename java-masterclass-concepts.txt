@@ -119,3 +119,32 @@ Steps in identifying static / instance blocks and constructor flow:
 	a. it can save our data to get accidnetally corrupter , in mutation class we cna have restriction logic same with get method
 	b. a change in this class wont affect other class , eg variable name change wont affect other as we an still keep set and get method as same
 - mandatory instance variables are initialized in constructor -> basic purpose
+
+
+
+- Arrays can not have negative size
+- Arrays once initailized will have default values based on data type like int[] will have 0 , boolean as flase , object as null and so on
+
+Wrapper classes
+- introduced as generics do not support primitive types and hence collection api and other benefits of genrerics were not usable for primitive
+- we could have created our own class with one of the instance variable as prinmitive type and that can be used for generics
+- but this wrapping of class and proimitive type is time consuming and hdence jdk have created it for us
+- All wrapper classes are immutbable like string and hence on modification a new object gets created, and another referenc emight still be poinitng to old object
+- earlier days we need to manually box(create Wrapper class from primitive type)  and manually unbox(convert wrapper class to primitve)
+- Also wrapper class adds a lof of functionlaity as part of methos in classes whicha  dev need not to write
+- automatic wrapping is just time saving and still boxing and unboxing appens behind the scene
+
+- Arraylit is nothing but dynamic array -> so each item index are next to previous one in meory
+	-> hence arraylist is good use case when we want to read the iterations a lot of time , as next address i next to it
+- In case of linkedlist -> each object can be in different memory location so iteration will be abit slower
+	-> however insertions will be faster as no need tof increasing array size,
+	also insertions in middle is O(1) and not o(n) as in arrylist it has to be shifted
+- Also if we want to remove items present in arraylist we have to shift cells left ways a lot, if a lot of items is there it is not good
+-> So use arrya lis when there are more number of reads and very less addition and removals
+-> use linked list when there are fewer reads but more writes/removes
+
+-> priority queue uses binary heaps to allow min adn max in o(1) time complexity , basically it will arrange items in sorted manner
+-> linked list implements priorityqueue features as well
+-> so if we want string, ojects to be kept in sorted manner we cna use prioerty queue impleentaionm -> or else wetrie custom code for linkedList impletmention
+- > iterator can not add or remove items in the list , listiterator can help in addition and removing of items
+-> listiterator also helps in iterating backwars on the fly if needed 
