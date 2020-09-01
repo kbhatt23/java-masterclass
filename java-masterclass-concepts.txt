@@ -148,3 +148,44 @@ Wrapper classes
 -> so if we want string, ojects to be kept in sorted manner we cna use prioerty queue impleentaionm -> or else wetrie custom code for linkedList impletmention
 - > iterator can not add or remove items in the list , listiterator can help in addition and removing of items
 -> listiterator also helps in iterating backwars on the fly if needed 
+
+Interface
+- An interface is nothing but a contract that the impl,enetor class will hve to folow, it forces methods signature , return types based on overriding rules
+	-> in case we do not use interface contract and in frameworj if we change method arguments it will cause issue in client code which are integrating it usung jar embedded
+	-> so in frameworks we need to enforce the contract in methods -> it can have covariant return but inpiut arguments must be exactly same and method name shud be excatly same
+		-> it can add unchecked exception but can onlt throws defined exception or its subtype, we cna not restrict method in sgnature than the interface which is always public
+- interface access modifier can only be public or default just like classes
+- all mehtods in interface are by default abstract and public -> we cna not force to chnage it to private ,protected, default etc , also we cna not make it static
+	-> as static and abstract can not go together -> static means implementation shud be there , but abstract means no method body
+- interface is very usefult in api/ creations as the client code will not be visible to framework dev
+	-> so any change in method will not give a bad smell to framework dev that it will cause issue in client code
+- interface is a contractual obkigation and hence uses clinet dev and framework dev to stick toa  contract and hence a chnage in any place should not break the contract
+
+- Inner classes : 
+	-> A nested public class added inside another class is inner class
+	-> inner class can even access private member variables and methods of main upper class
+	-> however no one can create the object directly of inner class, first create outer class and then use instance variale of that to create inner class
+	-> it is mostly uses in cases when the inner class can not exist wihtout the exisitng of main upper class
+	-> both static and normal inner class can access private variables of amin upper class -> however statc nested calss can exist even without creating object of upper class
+		-> also static nested class can exist indepenedntly and can have only static variables and methods -> 
+		-< it can only access static method and variables from main upper class
+	-> upper class can not accces inner class variables and methods until it creates its object
+	-> the only class that can create inner class object without creating object of upper class is the upper class itslef
+
+In inner class both upper and inner class can acces private instance variables and methods of each other
+	-> but the upper class has to create object of inner class to acces private methods , but inner class can access without evne creating object of upper class
+- private inner class means external clases wont be able to create object of innder class even after creating object of external class
+Types:
+a. inner classes
+b. static nested classes
+c. anonymous inner classes
+d. block class -> degfine inside a method and will eb accesible only inside method
+
+- The only place a class can be privavte is at inner class level only
+- static inner class do not loads on startup , as jvm loads only main upper class on import/class load
+	-> hence we cna create lazy loaded singleton using static inner class
+anynoumous classes are classed without names similar to method local classes -< but method local class do have name even though scope of that class is till {} branckets only\
+
+A varialble form method cna be used inside anaomymoius iner class but it needs to be effectively final
+	-> meaning it should not be changed once defined either inside the anonymous class orin the method
+	-> better make variables whihc are definiend insisd emhods and passed to anonymous clases as final manually
