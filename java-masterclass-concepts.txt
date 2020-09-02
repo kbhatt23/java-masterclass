@@ -189,3 +189,36 @@ anynoumous classes are classed without names similar to method local classes -< 
 A varialble form method cna be used inside anaomymoius iner class but it needs to be effectively final
 	-> meaning it should not be changed once defined either inside the anonymous class orin the method
 	-> better make variables whihc are definiend insisd emhods and passed to anonymous clases as final manually
+
+- Abstract class can have abstract as well as non bastract methods
+- an abstract class cna hev 0 abstract methods , but even if one abstract method is there we need to have class as abstract.
+- child class only needs to implement abstract methods but can override other methods
+- constructo is allowed in abstract class
+- also methods can be made private public, protected acces modifiers
+- we can not isntantiate an abstract class , however an implementor calss can call the constructor of abstract class
+
+----Generics------
+- Collection fraework came before generics
+- Collections used to hanbdle any kind of data type -> hetergeneous data type
+-> however while fetching it could cause classcast exception
+	-> they let raw type as part of backward capability  -> lot of code was written that way
+- generics is there only for compiler force safety check -> actual data still stored in object , 
+
+NAMING ONVENTION
+-  Packages
+- always shud be in lower case -> never use camel case
+- writ the reverse of domain url
+- if it contains - replace with _ same _ can be used to repolace conflicts like switch is also keyword so we cna com.learing._switch 
+for Switch.learning.com -> com.learning._switch -> all small caps , revers ,and use _ for any conflict
+ 
+- packages are used for segrregating classes and keeping in related directories 
+- same class name can be present in different package but smae clas sname can not be used for a enw class in same package.
+- once a packge class is imported no need to type the fully qualified name again unitl we need to use another class with same name but in different package
+
+- class can either be public or default
+- public is all te cpage acces ,default is access of class is till package only
+
+class can be final -> can not be extended
+- private methods can be used only in same file
+- default methods can have access only in same paclkage -> either using extends or object creation
+- protected methods : default within package , but outside package can be accesed only extending, but once extended in other packae for third class it becomes private
