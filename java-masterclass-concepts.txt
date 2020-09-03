@@ -222,3 +222,18 @@ class can be final -> can not be extended
 - private methods can be used only in same file
 - default methods can have access only in same paclkage -> either using extends or object creation
 - protected methods : default within package , but outside package can be accesed only extending, but once extended in other packae for third class it becomes private
+
+- final methods can be inherited but can not be overrideen , same with satatic method,
+	difference is static instance variale/methods will have one copy , however final instance variables/methods can have seperate copy for each object created of class
+- however in case of static method comipler do not give exection on forcefully overriding, it actually makes a new copy
+->	polymorphism wont work here
+-> meaning if reference instancs eis super but we are calling constructor of child
+	-? then it will always call static method of super class
+	-> if reference variable type is chaild then it calls tatic method of child
+- final methods can be inherited but can not be overriden -> compiler gives error , in static method we can redefine the method in child class with no compilation errro
+	-> if reference variable type is child class then static method of child will get caled, 
+	-> in case reference variable type is super class then static method of super class is called
+- anoymous inner classes can define new methods but that will be of no usage, as the methods we can call will only be mentioned in instance variable calss
+-> in anoymous class we can not create a new class and hence we wont be able to clal this method
+- vatiables used in lambda/anoymous class has to eb final or effectively final
+	> can not modify it inside the anonymous class not can modify after assgining the variable
