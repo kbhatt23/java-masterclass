@@ -237,3 +237,51 @@ class can be final -> can not be extended
 -> in anoymous class we can not create a new class and hence we wont be able to clal this method
 - vatiables used in lambda/anoymous class has to eb final or effectively final
 	> can not modify it inside the anonymous class not can modify after assgining the variable
+
+- final instance variable have to initized at vairable level or on constructor level or init block level
+	-> if we defined at vaiable level then it gives issue at other 2 level, 
+	-> if we instantiate at init block level it gives compilation error at constructoir level
+general sequence , first default value at instance variable level -> gets overrdien at init block level , then constructor level can be overriden
+	-> once instantiated at any level in other level if we again reassign vlaue it gives compilation error
+
+Collection interface is the base of interfaces like Set, List, Queue , each can be converted to anotherm however map is not part of this heirachy
+	-> Beneift of using collection interface instance variable type is in future we cna choose set or arraylist or convert one type to other without any change in code
+
+- Binary search is applicatble in Collections for list interface only, similar to Arrays implementaion -> O(log n)
+- > however we need to sort the array or list first
+-> thats why we need to pass comparator or implemetnas comparable in element class of collection
+
+- Copy constructor of collection classes do shallow copy only
+	-> meaning if we create new list copying from existing list, indivual elements will point to same object
+	->so if we modify any index object it will relfect in both the arrayliust, however new additoin of object wont reflect in other collection/list
+- Even if we use stream and directly collect to list -> shallo copy
+- for deep copy we shud use manual new cponstrucotr call one by one in for loop o r use map method of stream to call new constructor
+
+- Static block usage can be useful in initializing stafic final variable -> as it will be needed ot initlizae only once
+	-> lets say we have a list of string -> we can use arrays.aslist and in one line we can have static variable defined and initilzaed
+	-> but what about map
+	-> static variables are to be defined only once and we can not keep it in constructor
+
+Map -> map interface to store key value pairs
+HAshmap -> implmenetation of map , uses hashing for performance insertion and fetching and removal can happen in O(1) time complexity or worsee in case of collition -> o(n)
+	-> since it is hasedmap the insertion order wont be maintained while reading the entryset/keyset, as hased items are sotred in array based on hash key generated
+	-> put method overrides old value with new value when key equals, also it retruns old value
+
+- retunrin during constructor is bas -> as it actually return back object but part of code after return is not added
+	-> so if we want to block obkject creation we shud throw expection
+-> in method we have abiolity to retun null in bad if condition
+
+Set
+- No duplicated allowed
+- no way to acces specific index , as most of the time the insertion order is not maintained(in hashset)
+
+
+- hashset uses hashmap -> hashmap uses hasing technique to have node array , each item gets converte dto ahshcode and modulus of size then that wlement is kept in that index of araay
+	-> in hashset we create some random value and key as the actual element vlaue
+- hashcode has to return equal if equals is returning true , in equals mehotd we override and hence input has tobe object instance
+	-> we can check instance of operator if subclasses can be comared, other wise use obj.getClass == this.getClass() -> super class can coamre to suepr class only
+- In hashmap if duplciate key obj is passed it overrides however in hashset it bypass the second object
+- if equals is returning true hashcode has to return true and hence we override both methods together
+- in set if we have anaother object have is equsl to existing object it bypasses
+- in map if existing key equals new key -> it do not modify the key object(there could be some proeprties that are not used in equals method wont show up)
+		-> just override the value

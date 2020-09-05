@@ -13,9 +13,14 @@ public class DatabaseEntity {
 	//public void setKey(int val) {
 		//this.primaryKey = val;
 	//}
-
+	//since constructor main line gets called after instance block claled
+	//we cna not modify the already instantiated final variable
 	public DatabaseEntity() {
 		this.primaryKey = ++count;
+	}
+	{
+		System.out.println("jai shre ram fron init block just before constructor call");
+		//this.primaryKey=23;
 	}
 	
 
