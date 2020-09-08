@@ -285,3 +285,35 @@ Set
 - in set if we have anaother object have is equsl to existing object it bypasses
 - in map if existing key equals new key -> it do not modify the key object(there could be some proeprties that are not used in equals method wont show up)
 		-> just override the value
+- While allowing hashcode and equals method in case of subclasses ,make override and hashcode methods as finla, otherwise a bad overriding code in child class can cause symetric rule to fail
+	father.equals(child) will return true but child.equals(father) returns false, hence either make methods as final
+	or instead conside them differnet object liusing getclass== other.getClass() 
+
+unmodifiablemap/collection returns a map where we can call only read only methods , write method give exception
+	however once we get a single element from iteration we can still mpodify it , we can make that immutable based on need
+
+
+=====Exceptions============
+- Any exception senario can be hanled in 2 ways
+	a. have if condition to check and block that condition to occur -> eg dividing by 0, if(y == 0) return 0
+	b. let the code flow and keep inside try cartch block, flow goes to catch and return 0 from there
+
+File operations:
+Charachter streams -> 
+	a. file reader , filewrier  -> can take file or string file path, read/write characther by charachter one by one
+	b. bufferede read, buffered writer , can use buffer so taht less times read and write happens to file
+			-> need filereader/filewriter object to wrape, automatically the close method of inner reader gets called even on just calling close method of buffered reader/writer
+	
+Bytestream -> as the name suggest it do not store files with texts, like above ones,
+	-> it uses binary data to store in file and read from it
+	-> serialization uses this, which can store instance state in file using fileinputstreamreader and writer
+	
+	->this is used in case when we want to read write to a file whihc is not human readable, it stores data in file in binary format ,
+	once user try to see this file it wont be able to understand it, however this ca be read in code
+	Coding is simlar to carachter stream read/write
+
+- A class need ot implement serialzible interface to get serialzed
+- an instance variable of another class also need to be serilzable otheriwse it will give exception
+- if we do not have acces to instnacne variable class than we have to make it transient so that it gets skipped during serialzition
+
+- So if a class have instance variable of another class that is not serializble , so we make it tranisent to let the actual object serialize and on deserailziation we gets null
