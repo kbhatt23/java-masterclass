@@ -317,3 +317,55 @@ Bytestream -> as the name suggest it do not store files with texts, like above o
 - if we do not have acces to instnacne variable class than we have to make it transient so that it gets skipped during serialzition
 
 - So if a class have instance variable of another class that is not serializble , so we make it tranisent to let the actual object serialize and on deserailziation we gets null
+
+Random access file
+while using filereader.filewriter , if we want to read specific lines or write at specific line we need to start from first line nutil that line sequentially
+	-> this reduces the performance
+- Java provide random access file whih can be only used if the size of charachters of each line is same
+	-> we can directly jump to the line in O(1) complexity using formula -> lineNumber * size of each line -> we need to add chars each line +2 (for \n) for new line
+	-> \n is implicit and it is added byt jvm internally for file next line
+	-> we can directly tell the randomaccess file api to provide data for the byte size -> n *(charssize+2), for first line it shud be 0
+
+==================Java NIO=================
+NIO also stands for non blocking io or new io,
+- Introdued in 1.4 ersion as part of performance imporivmenet,
+- Normal i/o using file anbd filereader/filewriter/bufferedereader/bufferedwirter are blocking in nature
+	meaning if a thread is assinged to do a task for file writing/reading, it will go to blocked state until the operation is going and basically it will not do anything till the task is completed,
+	NIO adds feature to the task by making it nonbllkcing and can handle multiple tasks paralely
+- but it intrdoces some complexity, however we can ocnvert normal io to nio and vice versa
+
+Old i/o supports thread cloking functionaliteis foir -> filereader/writer, printwriter, bufferereader/wirter, -> these are for charachter stream data transfer
+	b. byte stream transer -> data whihc wont be easily understood by hyman , like butes of code , better for perforamnce
+	like dataoutputstream, datainputstream , serailziation also uses same concept but instead of saving indivdual properties seperately,	
+			in serialization we can save all the sate of whole object(skips transietn and all the instance variale shall be serailzable)
+	-> if instance variable are not accesboile we can make it transiet to block default serialziation
+	-> and override readObject and writeObject private clalback methods to first call oob method and then do wrtieutf,readutf methods of byte streams
+	-> we can take value from currnet instance and on read we cna creat enew instance and assing to main object
+NIO base data stream uses blocks of data instead of charachter by charachter or buffer of charachters
+	-> this enhances performance and also allo multipl different type of data throoug different data soruce
+-< nio uses channels just like spring cloud stream
+-> meaning we connect toa data source thorugh one channel and different data type of ocntnent can be handled in same blocks , and hence as compared to buffer (holding same data type)
+	we can even further increase size of blocks and hence very less time a task will be done in file operations
+	-> also a channel is non blcking since it can handle multipl different data types and hence for same data soruce from differnetn lpocation nio cna handle same theread
+	meaning thread do not have to go to sus[pended stat when task is going on, in normal io thread used to wait until operation is going on
+
+- Blocking means , thread will wait until read/write operation is fully done and wont do anything till then
+- non blocking means -> same thread will reamin available as part of channel(cna handle different data type)
+			-> client code iwll jsut provide the chanel with request and fire and forget, chanel store in queue and pass it to main thread to read/write operation
+		smae concept is usined in spring lcoud stream
+- Also trhead in non bllkcingio is always open and keep on picking things from queue, and provide data whatever is read till that moment
+	_ nio can be used to create channel connected to dataposurce like D.B , netwrok api, Files anything
+	- similar to reactive programming
+
+Problems with File io becuase o which nio came:
+a. Methods present in instance of File class have boolan return types adn do not throw the xception -> so finding real cause of failture was not an option
+	eg: we delete and it retuned flase , we do not know if file do not exist or we do not have permissions
+	for this jio introduces exists and doesnotexist methods -> if first return true it exist , if second returns true it do not exixts
+	/ in case boht returns false means we do not have permission to access file
+b. slowness while listing the directoroies/ sub directories recursively
+c. we cna not use file\\ protocl to connect to external files
+d. ineefficent metadata like file owner , file last modoified time, creation time , also do not support the step to modify the properties like creation time
+
+We can iterate one directory using directorystream<Path> we can use filters/globs to see only limited kind of items
+- however this can help us iterate only one level of directory and files, inner directory are not iterated.
+- We can use walfileTree method of files to iterate to nth level of subdirectories using depth first search of tree
