@@ -369,3 +369,61 @@ d. ineefficent metadata like file owner , file last modoified time, creation tim
 We can iterate one directory using directorystream<Path> we can use filters/globs to see only limited kind of items
 - however this can help us iterate only one level of directory and files, inner directory are not iterated.
 - We can use walfileTree method of files to iterate to nth level of subdirectories using depth first search of tree
+
+============Concurrency============
+- Process: A process is where any applicaton runs, on os leve we can see it, it can have multiple threads
+	a thread is a single executable unit of task, there can be many threads present on a single process
+- Each process has its own memory heap from RAM and one process can not access heap memory of another process
+- however threads runnig on same process can access heap mepry of proces which si sahred among all threads wihting the process.
+- thread also have local stack memory, whihc is not shared by another thread, however threads can have common memory in anme of heap of process
+- We cna not start the thread object twice , illegal thread state exception will occur
+
+- local variables in the thread are there on thread stack and hence each have its own copy,
+	if one object is passed to multiple threads then they share the same object
+	-> so race condition will happen , and change done by one will get rejected by other
+
+- synchronized keyword on method level will lock the object gloablly,
+	,meaning if one thread is locked and executing one synch method other thread wanted to execute other synchronized method will still wait until other method lock is over
+	thats why we shud have seperate lock , and using lock object we can lock and unclock part of methods
+- constructors can not have synchorizned as they are synchroizned on its own
+- we shud synchroze the block only which is modifying the heap data, local stack data of thread is hidden to toher threads ,
+	so we shud use synch block or reentrant lock to lock this for the part of code whic have modification in shared object only(heap is shared accress threads)
+
+- Synchronized lock object alwasy has to be on instance level and not local variable leve, as each stack has its own copy and hence it wont work
+
+- A thread can not be suspended while executing atomic operatins like a=b, a=23; however a =new A() is not atomic operations so currnet thread may susepnd and another thread can take over
+
+Problems with synchronization:
+a. locks can not start in one method and end in another, because of {}
+b. locks cna not be set with timeout
+c. once lock is not obtained it wait indefinitely until lock is aquired , we can not interrupt the deadlocked thread.
+d. synchronzie do not enforce first blocked thread to aquire lock the first, as JVM has its own mechanism 
+	if mayb epoossible the thread waites the lease gets the lock with synch blocks
+
+- Only advantage of synchronized block is that if block is  present in while loop and we do continue unlock is explicit(at the end of synchnozed curly branck ends)
+	-> however in case of renetrant lock we need to unlock during break or continuew manually, or do it using try finally
+- if we call unlock method in a renetrant lock that actually do not ahve aquired lock will trhow runtime exception
+- Executor service helps us to forget about thread life cycle and based on thread pool execute some task, or return some task paralely
+	-> based on thead pool it can manage life cycle of threads
+- concurrenmt modication error happens when a collection is not a synchroznied on and one thread has already locked reading/writing and another thread want to do write/read at the same time
+	-> basically when a thread has locked to modify other one tries to read or wirte it gives this exception
+- array blcking queu is synched and hence we do not have to handle synching before adding , removing,modifying the item
+
+2 ways of deadlock
+a. thread one lock1 and thread 2 locks 2 and thread 1 waiting for lock2 and thread2 waiting for lock 1, corcular deadlock
+b. one synchrnized method calling another syncrhozniaed method of same class
+	basically one method claling another synch method locked on same object
+	since first method is not omplete, it can not execute second method and since second method is nto compelte method 1 is not complete and hence lock is blocked
+Thread starvation is condition when a least prioritized thread who is waiting nevenr get to aquire lock and ececute its task
+- setting priority in synchronized block do noth help as jvm do not support fairness,we can use reentrant lock fairness version of constructor but it causes performance
+
+- Thread can not go to supsend state while it is running an atomic operation like a=23, a=b , however a ="23" strinct literal is  not atomic
+	so if method is not synched and two threads call simultaneouos there can be slipped condition and datainconsistency
+- Volatile : Each thread uses local cache for all variable values for performanc eimpact,
+	so if one thread is running on one processor and another thread on another processor than its possible that thread  1 might increment to 2 , but value wont be visible to other thread
+	if we make variable volatile it do not caches it in thread level and directly read write to main memory 
+- we still need to synch thse kind of variables
+- If the common heap modification process is atomic then thread wont suspend and at same time another thread wont modify the heap memory
+	hence we do not need synch block for atomic process
+- Integers like atomicinteger make increment and decrement as atomic and hence we do not need synch bolck for these steps
+- java iterator object from collection can be used only once, once completely iterated we need to createa a new iterator as hasnext from the same iterator object will give false
