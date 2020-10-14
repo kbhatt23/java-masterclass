@@ -427,3 +427,12 @@ Thread starvation is condition when a least prioritized thread who is waiting ne
 	hence we do not need synch block for atomic process
 - Integers like atomicinteger make increment and decrement as atomic and hence we do not need synch bolck for these steps
 - java iterator object from collection can be used only once, once completely iterated we need to createa a new iterator as hasnext from the same iterator object will give false
+
+- lambdas do not apply for abstract class with single abstract method, 
+- Lambdaas are btter than annymous class
+	-> anonymouc class gets ompiled to a sperate .class file meaning 2 class will get created one for main class and one of anononymous class
+eg of anonymous class name: basics.HOwManyObjects$1
+	-> lambas are like curly brakets within method , all outside variables are effectively final meaning once insiazied can not cahnge if using under lambas
+	, It is because lambdas are lazy and do not eavaluate sequentially and hence it is better to make it final
+- lambdas can only be used for interfaces whose only one method needs to be impl,ented in class, if something is present in object class than thar time also it can be finctoipnal
+eg: comparator , compare to and equals both are abstract method but equals have feature in object class and hence it is functional interface

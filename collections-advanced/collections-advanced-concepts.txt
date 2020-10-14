@@ -1,0 +1,20 @@
+- A Viewed Collection is just a view for underlying data structure
+- General rule of any viewed collection is that modifying it also modify the underlying D.S
+	, also new item can not be added in viewd collection , however removal and modification of current items can be done
+	, also any cahnge in underlying sructure will also show up in viewed collection
+- examples:
+	a. Arrays.as List:
+	-> It creates a arraylist view that links to a fixed size array
+	-> we can not grow the size of that array and hence can not add any item to list
+	-> however we can still modify the list and that will show up in array as well
+	
+	b. Map.keyset
+		-> any modification in key et can be done like remove or update and it will reflectin Map(underlying d.s)
+		-> but can not add a new entry -> unsuportedoperationexception
+		
+- A treeset/treemap -> uses comparator to insert items in specific order
+- a rare case is that the tree set and treemap uses comparator comare method to check if two items are equal or not
+	-> eample if we add treset.add("ONE")l then treset.add("one") and if the comparator used was Case insensitive string then it consider both items to be equals in treeset
+		but in hashet it uses equals method
+- Sorting gives preference for CAPS up chars before caps down, eg treeset.add("AA"), treeset.add("ZZ") treese.add("aa")
+	-> it will have 		AA,ZZ,aa

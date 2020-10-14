@@ -1,0 +1,72 @@
+- Each thread have their own independent method call stakc, so far we learned that main thread have stack
+ , similar to that each thread have indepenent method stack
+Daemon thread is a background thread that has least priority
+ -> it will run untill all the non dameon thread are available and running()
+ , before calling start we can set daemon as true
+for all user threads even though main thread closes we complete the task, but in daemon thread it will quit if all the user threads are done exucuting 
+- Thread class implements runnable and has one instance variable of runnable 
+	-> if runnable instance is not run it executes run method of instance
+- we can add new thread object in argument of thread constructoor and that works but an overkill of resources
+- once a thread is started once we can not staryt it even though thread execution is over
+Thread states:
+a. new : When we just create thread obvject whihc is not executable thread instance in O.S or JVM
+b. Runnable: Once we clal t.start method it goes to thre scheduler pool state is called runnable where it waits for scheduler to modify the state
+c. running: from runnable state scheduler picks and execute the actual run method
+d. sleep/susepended: when we do sleep , wait the thread goes to blocking.suspended state,
+	another thread on notify.notidy all make it back to runnable state,also after sleep period is over (thread.sleep) it goes to runnable
+	again it has to beg scheuder if it can go to running state
+e. dead state: once all taks in run emthod is done , it goes to dead state,
+- Any thread once started can never be started again
+- once we sleep/wait a thread it goes to supsendde state and once anoter thread notify or sleep time is over
+	this thread goes from suspended to runnable state waitning for scheudler to move to running state
+- Thread remains active only in stage 2,3 and 4 only
+
+- The priority if a created thread is same as that of what thread created it, unless mentioned specifically
+	Thread shceudler picks hiughest priotuy thread to execute at any time, 
+ - > Thread.yield static method helps us to make currnet running thread go to runnable state and any thread which has equal priority to be give a change to go to running sate
+	-> if we wont use yeild always a thread with highest priority is chosen
+	However yield is just a way toi give chance to any thread iwth same priority to go to running state and make runnig thread to runnable(can never go to blcked state)
+	however it is not neccessay that yield will alsya make it work
+- join method is non satic method that actually blocks currnet runnign thread until that thread is done /dead state
+
+- Even static methods can be synchronzied and that will have a single lock for all the object instances,
+for instance method we cud have locks based on individual objects but static method since have same copy for all instnace we will hve only single lock per class
+
+Atomic variable:
+- They allow basic operations without lcoking priciple
+	-> generally a method not synchronized will cause currnet thread intermittnelty suspend and new thread to work on a line only when a staetemnet is not atomic
+	- < these clases makes the operation atomic and hence the time consuming lock and unlock can be ignored
+-> how they make it atomic
+	-> they work on compare and swap steps:
+	a. take currnet value in temp, incrment temp, and then compare if latest count value is updated by any other thread
+	,if no then update the counter variable if not then repeaat above 3 steps until it actually steps
+	a = b, is genrally atomic so last step if no repeating of stpe was needed is assumed to be atomic and can not cause issue even without synchrobization
+
+- Condition class is part of reentrant lock that helps to call await and signla(similar ot wait and notify)
+- however this has to be insied lock and unlock method of renetrant lock just liek wait and notofy is within synch block
+- Multiple conditions can be created withing same lock object and that can help us group the threads
+	eg 3 threads can wait and notidy among themselves and other 3 amont each other in speratt condition
+	-> Condition c1 = lock.newCondition();
+			Condition c2 = lock.newContoion();
+	Thtread t1 , t2 and t3 can use c2 to call await and signla and toher 3 can comunicate with c2 and hence theis helps in grouponing
+	this feature cna not be implemented in synch way of locking
+
+Reentrant read wirte lock.
+Same as reentrant lock, however in nomrla lock all threads are block as part of method inside the lock and unlock.
+- This feature adds 2 locks, read lock and write lock, many threads can aquire read lock and write lock will force a single thread to modify at a time
+. This can be used in making collections concurrent
+
+=========fork join framwwork===========
+- So far executor service helps utilize cpu and ram and processor to do multiple jobs,
+	However fork join framework can break bigger job into smaller job and executing them in paralel and then merge to get job faster
+- fork join pool is different than thread pools of executor service
+	-> it have a queue where ForkjoinTask child classes can be present and job of thread is to complete this task
+-> initially there will be only one thread and whoile taks is given to him
+	-> it divides it in half, take work of half with itself  and first half it pushes in queue(proces is called forking)
+	-> this forked queue cna be fetched by naother free thread in forkjoin poool, it again divides it and keep second half with him and other half in its queu(fork)
+	this process repeats and after this frist half pool is joined(blocked) tos that we cna merge the takss
+	this queue taks might be stolen by another thread and wud already be done or not, if not done it blocks if done it continues right away
+
+- best feature is if one thread is slwo and other thread pool is done with taks , it steals the task from that another thread
+	this way we keep on dicidng the task , and if one is done it again divides the taks present in anothers queue
+- ultimately we have to join(block like thread.join) for other queue to be done
