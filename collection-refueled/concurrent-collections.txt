@@ -1,0 +1,19 @@
+- We get Concurrent modification exception when a thread is inserting items in sahred collection ,
+	and another thread is reading form sahred collection, so when at the same time one thread is inserting item,
+		and another thread is reading item using iterator we get concurrent modification exception
+		
+- Concurrenthashmap do not lock on whole object unlike hashtable
+	, also they do not lock on read methods, only locks on write methods
+	, also they do not lock the whole method of write, but parts of it
+	, hence performance is imporeved and we do not get concurrnetmodificationexception
+	. basically concurrnet hashpa locks in bucket level ,hence items to be writeen will be lcoked only witin same bucket,
+	, other buckets will not be locked
+	, nulls are not allowed either as key or value just like hashtable 		
+	
+- CopyonWriteArrayList
+	, No need of locking on read operations
+	, on write also lock is not needed instead any modification is happens on a cloned copy of main object, then it synchs with the main object
+	, read always happens in main object, everytime while synching a change from same thread , it checks if any change happened on main object
+	, it pushed to clone copy and commits loned copy as main until there is no change in main object
+	,similar to atomicInteger type classes
+	, however we should use it when there are fewer modifications, otherwise a lof of objects will be created and can impact memory and performance			

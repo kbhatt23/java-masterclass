@@ -1,0 +1,63 @@
+--Nullability in collections
+- All the lists like arraylist,linkedlist,vector,stack allow n number of nulls and preserve insertion order
+- Hashset and linkedHashset allows only single null values and Treeset if used with default comparator do not support null and gives null pointer exception
+- HAshTable do not allow null as key or values, HashMap support only null key and any number of null values
+	, Linked HAshMap also support only single null key and any number of null values,
+	, TreeMap support any number of null values, but do not support any null key, if used with default comaprator
+
+- A lot of time is spent in orchestrating and managing the data in memory once it is taken from D.B/Webservice/Files etc
+- Collections are needed to provide general purpose data structure and hence helping developers in managing complex data effectively and easily
+
+- Any collection while iteration using for each, for loop or iterator can not remove any item while iteration is in progress
+	-> if we want to remove use other method like removeif or bulk remove methods
+	-> but this rule applies to fixed size collections like viewed collections
+		eg: Arrays.asList but if we crate array list and add items manually using add method
+		we can remove item from collection even while iterating the collection -> using for,foreach or iterator
+		
+- Fixed size arry using Arrays.asList can not remove any item as size of array is fixed and hence can not remove or add
+- > //fixed size array can not increase the size or decrease -> hence we can not remove or add item in viewed list
+		//strings.add("f");
+		//strings.remove("c");
+- all colletion uses arrays only as actually physical stoage is array, other are nothing but a wrapper around it
+- two physical structrure are arrays and linked list, other collection uses them for their functionality		
+
+=======Arrays======
+-if we do not have arrays then we need n variables to store n values 
+- Arrays help us assinging a single variable to n number of ellment whic have smae data type
+- Each Array class for each data type has its own class like for it it is [I , for string [Ljava.lang.String
+	- these OOB array classes are not visible for developers as they are native methods
+	
+- We can create array of 0 and more than 0 int size, but it will geive compilation error in case of setting less thatn 0
+- In case of 0 sized array -> while setting on a[0] -> gives arryindex out of bound excpetion
+- allowed datat ype in size of array are : byte,short,int or any d.s foirce casted to int	
+
+- We can not use {1,3,4,4} after declaration in another statment
+	-> we have to decalre intialize and instatntiate the array like this in single line
+	
+- ANONYMOUS ARRAYS must be assigned to some variable like passing to method, assingng to a variable
+	-> same like ternary operator, it has to be assinged to some variable 
+
+- Issues solved by collection over array:
+	a. it can store heterogeneous elements -> non generic ocllection story any item, inface collection was introduced before generics
+	b. size can grow and reduce as per need 		
+	
+- Iterator supports one way iteration only and remove of element 
+- List ierator are present only in list , supports bidirectional iteration
+	, supports remove, add and update the element
+	
+- TreeSet and Treemap do not use hashcode and equals for check contains,and equality operation ofr item duplication
+	-> even if class do not have hashcode and equals method 
+	-> and comparator is there in treeset it uses that -> compareto == 0 then item is equal otherwise not
+- hence Comparator like case insenstive things can be dangerous
+-> and it wont allow "MESSI" if "messi" is already there in set		
+
+- Linkedlist, Treeset, TreeMap do not need ot grow as it uses ever growing Data structures behind the scene
+
+- LinkedHAshMap iterated based on insertion order,
+	so in case we are calling put method again for same duplicate key , value will get updated but the order of iteration wont change
+- WeakHashmap -> 
+	Generally G.C cleans all the objects whihc do not have reference, but in case of hashmap, if one refece variable is passed as key
+		and then key is set to null , even then g.C do not clear the key for G.C as hashmap dominates over G.C
+		-> in case of weakhashmap the key will get G.Ced and hence as view's entry set changes reflects in main map, entry will be removed	
+		
+
