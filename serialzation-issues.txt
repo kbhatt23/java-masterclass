@@ -1,0 +1,9 @@
+a. effect of serialziation on synchronized methods that updates instance fields like map/set/list
+
+b. effect of serialization on constructors that throws illegalargumentexception
+
+c. if field is in supercvlass and we are instantiating subclass then on deserialztion it is not sure that same subclass will be reintiazlizzed
+	if byte stream is updated by malicious site, it can force us to get another subclass not the instance of the original class we instantiated with
+
+d. exception handling in wrong state setting using readobject private method
+	even though exception is thrown heap still have object and hacker can misuse it  
