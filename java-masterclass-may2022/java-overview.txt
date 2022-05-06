@@ -1,0 +1,134 @@
+Java is programming langauge with below major features
+- platform independent: write code once and run anywhere , portable
+	meaning u write code in one sydtem compile and it can run on any system of any o.s or hardware
+- object oriented: can be used to model real life scenarios easily, easy to think
+- concurrent
+- fast
+- general purpose : meaning same language can be used in wide variety of business domains
+- secure and simple to use
+
+criterias in java designing
+- syntax was made similar to C and C++ as lot of dev were familiar to that in 90s when java was built
+- has to be simpler than C and C++ hence Few features of C and C++ were cut out
+   hence memory management unlike C (pointer , malloc , calloc) were out of dev hands
+   java has automatic memory management using G.C
+- java added inner libraries for general purpose of dev , C nad C++ do not have extensive inner libraries    
+  like Collections, Date, Utils etc
+  
+- Sun microsystem built java to create green project
+  which was like remote commanding TV and VCR player, software was installed inside TV,VCR and this remote
+  hence java is platform indepedent and memory used should be less
+  analysis of green team was that in future lot of embedded systems/light weight systems will pass programs over internet/network
+  devices will be heterogenous meaning different o.s managed
+
+  Goals for the same
+  a. should consume less memory as software is embedded in remote and similar devices : hence java has automatic memory management using auto G.C
+  b. safe and secure
+  c. platform indepedent
+  d. multi threaded  : while download is happening current show can be seen, multi tasking
+  
+- as per green project in future lot of heterogenorus(difrerent o.s) systems might communicate
+  and program created by one device should run on another device with different o.s and hence it should be platform independent and secure and auto memory managed
+  the project created by sun failed but it got used in www extensively
+  
+- computer CPU understand only combinations of 0s and 1s as instruction but it is very tough to write big code using this
+   hence high level langauge came like hava , C , C++ 
+  compiler is a complex program which converts high level programming soruce code to another form
+  C compiler convert high level code(easy for human readability) and convert to machine code (specific to O.S) and hence is platform dependent
+  Java compiler converts source code high level language into bytecode  which is making it platform independent
+- Assembly languages are low level language whihc is easier than native binaries but still not easy for humans
+  assembler is used to convert asemmble language source code to  binaries for machine language
+  
+- C compiler compiles .c code into o.s specific binary file like .exe for windows .out for linux and so on and hence it is platform dependent
+ reasons of platform dependency
+ a. different output binary files based on o.s , like windows have .exe , linux have .sh etc
+ b. different commands based on O.Sun
+ c. different processor might have different instruction set (native code instruction set can be different for different processor)
+ 
+- interpreter is a complex program that takes high level source code as input and execute it ,no need of compilation
+  this is good for platform independence but bad in terms of performance, eg is Javascript
+
+- extra features of compiler by default
+ a. check for programming rules like syntax and semantics making it fail fast
+ b. can do code optiization so that performance can be better while execution
+
+- java achieves platform independence just like interpreter but performance is not compsomised
+  a compiler ensures code optimization , performance optimization unlike interpreter but lacks platofrom independence
+  an interpreter ensures platform independence but lacks performance optimization
+  java uses compilation for fail fast of code, performance code optimization and interpreter for platform independence
+
+-  source code (high level) -> java compiler -> java bytecode(highly performance optimized and rule checked) -> JVM (interpreter) -> platform independence execution
+
+- JVM is the interpreter that needs bytecode to run , any programming language can be compiled to java bytecode can be executed using jvm for platform indepdence and fast execution 
+ and jit compiltation and other  benefits of JVM
+ 
+- JVM responsilbities:
+  a. Bytecode loading and interpretation
+  b. security
+  c. JIT compilation
+  d. Garbage collection
+- JIT compiler is called compiler as bytecode is compiled into native language and put in cache and form now on processor runs the native machine code directly
+  no involvement of interpreter for cached code compiled
+
+- Object oriented programming languages helps in visualizing and modeling real life scenarios easily and naturally
+
+- java is statically typed language means once variable is defined its data type can not be changed, javascript allows same variable to hold different data(dynamically typed language)
+
+  statically typed language advantage is we can fail fast means coding error can be chekced at compile time
+- we can not reinitialize variable at class level, can do in method/static/init blocks etc  
+
+- class level fields get default value for static as well as instance variable but not for method local variable
+
+- char is a primitive data type holding single char value in a variable, 
+  it is 16 bit unisgned integer : meaning it will be positive only
+  each char has a unicode whihc will be int and in postive and is 16 bit
+  range : 0 - 2 ^ 16  -1
+- meaning char is nothing but 16 bit int and is always positive , 0 - 2 ^ 16  -1  
+- in char variable we can store int, but only in range 0 - 65535 : range : 0 - 2 ^ 16  -1
+	eventually it will show its aci charachter if printed
+
+- so in summary 3 ways to initialize char
+ char c = '1';
+ char a = '/u123'; //unicode
+  char c = 12; unicode unsigned 16 bit int value 
+  
+- we can define multiple variable at once but only of same data type and value also must be initialized
+
+- method return type and method name in signature should always be close, no keyword can be used in middle of these	
+
+- method overloading is also known as static polymorphism meaning which method is invoked is deduced at compile time and not runtime
+  save(short s)  and save(int s) are methods
+  we call save(23) literal is always int hence it calls int version
+  we all save(23b) byte do not exist so it checks closes upper bound meaning short
+  
+- in method overloading method name is same and parameters are different : meaning data tyoe change, variable more or less
+   even different order of methods means method overloading
+  also return type change and other things same means compiler error   
+  
+- java 5 onwards we have variable argument in method
+  name is vararg becaue atually in method parameters are fixed only in the form of array but it gives infinite overloaded methods
+  only invocation side of method can send 0-n number of argument of same type
+  they can either pass array directly or pass 0-n value seperate by comma in argument list and internally compiler converts to array
+- var arg can only be the last parameter of method and there can be only one vararg parameter in method     
+
+- vararg is just used for easier and simpler method invocation
+  anyway oarameter size is fixed and data type is array why not just pass array
+  just like caller invokcation would be simpler no need to pass null or empty array nor need a null check in called method
+  
+- constructors are used for 2 things
+  a. creating objects from template of the class
+  b. initializing instnce variable to define initial sate of object      
+  
+- rules of constructors
+  a. if we do not define any constructor compiler creates a no arg constructor with a super() no arg constructor call
+  b. if we define any constructor be it no arg or with arg, compiler wont add no arg default constructor  
+  c. constructor can not return any value , however void return is possible but not good , instead we should throw runtimeexception in bad input case
+  d. just like methods constructor are overloaded , good for code de duplication and easier acess to client
+  e. constructor can call instance as well as static methods, access instance or static variable
+  f. first line of constructor is either implicit call to super or manual super or this valid call to constructor
+     can not have variable defined and then calling this or super
+  g. can not call self constructor using this
+  h. can not have recursive cyclic calls of constructor of overloaded type  
+  
+- constructor overloading is same like method overloading , exact argument must change or else it wont compile
+  it is good for flexibilty to the client and also good for code de deduplication
