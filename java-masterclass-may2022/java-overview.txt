@@ -132,3 +132,79 @@ criterias in java designing
   
 - constructor overloading is same like method overloading , exact argument must change or else it wont compile
   it is good for flexibilty to the client and also good for code de deduplication
+    
+- pre increment means before this statement the value will be updated
+  but in post increment the value will get updated after this statement execution
+  int k=2;
+  int m = k++; // syso will give m = 2 , and k = 3; 
+  int k=2;
+  int m = ++k; // syso will give m = 3 , and k = 3;
+
+- conditional opertions take one or more operands and return true based on condition
+  eg : >,<,>=,<=,==,!= apart from last 4 all are applicable to all primitives
+  > like ones are not applicable to boolean or objects
+- logical operations take one or more boolean operands and return boolean value
+   in logical operations like && , || and ! if operands is non boolean then compilation error occurs
+   
+- operator precedence from highest to lowest
+  negation > arithematic > conditional > logical
+  meaning && and || have lowest precedence  
+  
+- bitwise operators
+ as the name suggest will involve manipulation in the bits of the oeprands
+ types of operands , int (or auto trasferable type like byte,short, char and int) and boolean
+ typically used in embedded systems where there is huge resource crunch and memory crunch and have huge perforamnce reasons in very less memory 
+ & : convert the bits of both int or auto trasferable data to its binary representation
+    then for each bit if both elements are 1 result is 1 , then transform back the bits to normal int
+ ! : convert the bits of both int or auto trasferable data to its binary representation
+    then for each bit if one or both elements are 1 result is 1 , then transform back the bits to normal int	
+ ^ : convert the bits of both int or auto trasferable data to its binary representation
+    then for each bit if exact one digit is 1 then result is 1 , then transform back the bits to normal int	
+	
+- switch case can be replacement of if else blocks
+  not always , can be used when one literal or variable can be checked with specific set of values
+- rules of switch case
+  a. switch expression can be literal or variable
+  b. different cases have break as optional: whihc breaks the whole switch case
+  c. if one case label is matched and no break exist all subsequent below ones are executed
+  d. default can be last or anywhere(so break rule applied according just like normal label)
+  e. switch case can be applied for int (or int trasferable like char byte short) , Strings(since jdk 7) and enum  
+ case label restrictions
+ a. value of case label should be within the range of switch expression data type
+ b. value should be contained at compile time meaning should be a constant
+ c. null in case of Integer will give null pointer exception
+ d. all label values should be unique 
+ 
+- switch is preferred for an intent to use and forcefully use only one variable and lesser complex logics
+ switch when applicable and compilable is always faster than if blocks as labels are constants and can be optimized during compilation 
+ hence witch case is better performant as compiler can do optimization due to label static compile type data and wiring
+ 
+-=-=-=switch case revision-=-=-=-=-
+- can be used to replace if else complex blocks but only in specific scenarios
+  a. when there is only one variable invovled and of specific data tyoe like int(or char byte short or Wrapper of same), enum or Strings
+  b. There is equality check only with values and not >= or other complex && || based conditions
+  c. value to check must be final or static at compiletime
+  
+  
+  
+- in ternary operator first operand is always boolean
+  second and third operand has to have a value, meaning a method with void return wont work
+  and complier wont be happy until we forcefully assign whole ternary operator to a value  
+  
+- java API is collection of prebult classes well tested and designed by experts
+  it saves our time in writing code from scratch and also is well designed and maintainable
+  also it is bug free and since millions of dev uses it , it adds code readability and maintainablity
+
+- classes in java are organized into packages based on functionaliies, packages are nothing but directory structure
+  it gives absolute name + path to a class
+- Why pacakage
+  a. instead of single package it divides organizes based on functioanlity and classes can be filtered based on that
+  b. class name resolution : java.util.Date != java.sql.Date 
+  c. security : classes inside package may be accesible but if we want only few classes to expose to other dev we can use packages  
+  
+- importing packages/classes have no issues in bytecode
+  we might import pacakge and may never be using them , it wont add anything on the bytecode and .class performance
+  compiler automatically adds fully qualified name on respective methods
+  so importing packages even not in use have no side effects, no increase in .class bytecode, no performance impact
+  these import are pnly benefitted for code readability and maintainablity as compiler adds them in bytecode
+= java.lang package need not to be imported like String and Integer  
