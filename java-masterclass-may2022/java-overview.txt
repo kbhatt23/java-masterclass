@@ -191,7 +191,7 @@ criterias in java designing
   second and third operand has to have a value, meaning a method with void return wont work
   and complier wont be happy until we forcefully assign whole ternary operator to a value  
   
-- java API is collection of prebult classes well tested and designed by experts
+- java API is collection of prebuilt classes well tested and designed by experts
   it saves our time in writing code from scratch and also is well designed and maintainable
   also it is bug free and since millions of dev uses it , it adds code readability and maintainablity
 
@@ -208,3 +208,20 @@ criterias in java designing
   so importing packages even not in use have no side effects, no increase in .class bytecode, no performance impact
   these import are pnly benefitted for code readability and maintainablity as compiler adds them in bytecode
 = java.lang package need not to be imported like String and Integer  
+
+- string literal is internized automatically but new String("a") will need to be forced to internized
+  String s1 ="abc"; , String s2 = "a"+"b"+"c"; syso(s1==s2) return true 
+   concat literal will look for internization but noe like below
+   String x  = "bc";
+     String s1 ="abc"; , String s2 = "a"+x; syso(s1==s2) return false as compiler do not know ab out actual value
+	 but final   String x  = "bc"; with same data return true as it is compile time constant
+	 
+- String s = "hello "+ " world"+ 123 : hello world123
+  String s = "hello "+ " world"+ 123 + 100 : hello world123100
+  String s = 123+100+"hello "+ " world"+ 123 : 223hello world123  
+  
+- information hinding using private field and setter getter have below benefits 
+  a. using setter method we can validate the input and worng values can be ignored
+  b. using getter we can add security implementation like if client can actually view the field
+  c. in future if we want to change the innter field implementation we can just add code on setter and getter and contract of methods remains same 
+    hence client wont be affected,   
