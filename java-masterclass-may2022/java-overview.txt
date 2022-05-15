@@ -225,3 +225,35 @@ criterias in java designing
   b. using getter we can add security implementation like if client can actually view the field
   c. in future if we want to change the innter field implementation we can just add code on setter and getter and contract of methods remains same 
     hence client wont be affected,   
+
+- static init block can help initializing static variable where multiple line of code is needed
+  eg setting basic data in a d.s like hashmap or Set (in jdk 9 we have immutable list static factory methods but not in jdk8)
+ or creating a static variable for connection : will need multiple line for this and multiple if conditions hence not possible to add on class level withiut this block  
+ 
+ - init blocks can be used for initializing instance variable
+   why not put in constructors
+   simple for each overloaded constructor call after super constructor call init blocks are called from top to bottom
+   so that common code need not to be kept in all constructor: could have been done using method call in constructor but thats not good approach
+   init block comon code auto call by compiler is better
+   
+-=-=-=repeat of init blocks-=-=-=-=-
+//static block helps in initializing static fields of a class
+// why: we can not add multiple line of code on class level, so to have some logic to initialize static fields we need static block//static block helps in initializing static fields of a class
+// why: we can not add multiple line of code on class level, so to have some logic to initialize static fields we need static block   
+
+	//steps : first super constructor completes -> init variable from top to down and then constructor code
+	//hence any common code can be kept here at one go and all constructor will get this excecuted: no duplicate code in constructor	
+	remember constructor can call method and common code can be kept there but that will not be good designed
+	as init block gets called by compiler and also method was supposed to be used by other classes
+	
+	
+- wrapper class are objects that hold primitive data type within and hence the name box or wrapper class
+- valueof is the best static factory way to create object and it is equivalent to literal assignment
+ i mean valueof static method and literal assignment to Wrapper class have cache and memory sharing as well
+ but constructor do not do this , they keep on creating new objects even though they might exist on cache
+	
+	
+- just like string class integer is also immutable and data sharing happens but within range of min and max value
+Integer one = 127;
+	Integer waah = 100 + 27;
+		System.out.println(waah == one);	this also return s true as literal value already consider cache
