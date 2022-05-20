@@ -257,3 +257,9 @@ criterias in java designing
 Integer one = 127;
 	Integer waah = 100 + 27;
 		System.out.println(waah == one);	this also return s true as literal value already consider cache
+		
+		
+- remember access modifier capability is same for method call from another class as well as inheritance
+  apart from protected modifier all other behave same when one class creates object of another class and invoke member(method or variable)
+    and another class extends and try to inherit that member
+- child inherits both variable and methods but only methods can be overriden, we can update variable but that will be like new variable in itself	

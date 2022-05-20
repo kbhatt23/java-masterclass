@@ -1,0 +1,6 @@
+- member variables overriden are instance methods, instance variable , static method and static variable
+  however only instance method is polymorphically overriden
+  instance variable can be shadowned by recreating same variable in child
+  static method might look like overriden in child but thats a new method
+  static variable also is nothing but a new in child
+ in all 3 above case the reference variable type define the method/variable at compile time 
