@@ -4,3 +4,61 @@
   static method might look like overriden in child but thats a new method
   static variable also is nothing but a new in child
  in all 3 above case the reference variable type define the method/variable at compile time 
+ 
+ 
+- Abstract class means class is abstract meaning all its methods are not concrete and
+  we know what is to be done and using what all things but how it is to be done that can only be based on specialized version
+  
+- Abstract class may have empty implementation of some method (0 or n)  hence its object should not be instantiable
+  as it can give runtime error for unimplemented methods and hence its child class has to be instantiated 
+  
+- It is better to use abstract class instead of tagged class as in tagged class all subtype behavior remains in same class
+   whihc is bad for maintainance and bad single reponsiblity principle
+	reason to modify class is more than one and hence class keeps on modifying and need proper testing again and again
+	
+- abstract class enforces contractual obligation to childer and also uses polymorphism to use same method for all subtype	
+   lot of design patterns like tempalte pattern is based on this
+
+// if a class is abstract that do not have one abstract method it could be 0
+//but if even one method is abstract class has to be abstract  
+
+	// abstract method forces children to provide implementation
+	// abstract method means implementation is not known and hence can be like ();
+	// abstract method forces class to be abstract
+	
+- If down the heirachy any class implemented an abstract method its child need not to implement it, but it still can override it	
+- Even abstract classes have constructors , however only child can call this constructor using chaining
+  we can still not create object of abstract class but child class can initialize the state of variables present on super abstract class
+   by calling its constructor, no one excpet child of abstract class can call its constructor
+
+- We know that superclass provide a contract meaning a behavior (public/protected members like stativ vars, instance vars, methods and static methods)
+  contract here means behavior that super type and its subtype will inherit
+  contract in simple word means we can expect the same behavior defined in super class will be same for subclass
+  only public and proetect methods, static methods , instance vars and static vars
+  however only instance method is overriden
+- Similarly interface is a super type which define contract meaning its implementor classes will inhibit those behavior for sure
+Definition
+a. 100 percent pure abstract class
+b. does no contain constructor
+c. by default all members are public
+d. for methods public and abstract gets added  by default with no method body (pure contract)
+e. all variables are by default compile time constant : public static and final , can not have instance variable
+f. since no instance variable no need of constructor and hence no need of actually calling new on interface    
+g. we can implement multiple interfaces as umlike classes it generally do not have method body : pure abstract contract
+   so no way we are going to have diamon problem, but after jdk8 it have implementation and that cause deadly diamond problem
+   jdk compiler forces child to override the method and we can use intercace1.super.method for that default method call
+
+- examples of marker interface : Cloneable, Serialziable, RandomAccess (used by arraylist)
+  Cloneable is used just to show to jvm that dev is allowing this object to be cloned
+  Serialziable is also is used to mark that dev is allwoign this object to be serialized and deserialzied
+  we need not implement anything as part of this contract only jvm check instance of in seperate utility classes for the same validation
+ 
+  So in summary marker interface do not have any contractual method to be implemented by dev implementor class
+  just use it like annotation to enable and giving permision for JVM utlity classes
+  eg: Cloneable  : if not impleneted and uses objec.clone method throws expection : it checks instanceOf Cloneable to true
+  same with Serialziable : ObjectOutputStream class checks instanceOf Serialziable to true or else throw exception
+  also if ArrayList implement RandomAccess marker interface it just used by Collection.shuffle method to use bettter implementation based on instanceof check
+  eg Collection.shuffle method:
+   if instanceofRandomAccess like arraylist: swap various indiced on same arraylist object
+   if like linkedlist not instanceOf RandomAccess : copy linekdlist to array : swap items in array : copy array to create linkedlist
+  
