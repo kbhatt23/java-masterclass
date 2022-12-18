@@ -1,0 +1,170 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Java came in picture to solve future of systems where heterogeneous systems communicate over netwrok
+  passes program for execution and that program can be executed by other hardware systems
+  
+- challenges of green project
+a. should be able to pass program over network
+b. language should be platform indepedent to ensure this passed program execute on different hardware
+c. embeded system have less memory so this language should be light weight and consume less memory
+d. security
+e. multithreading
+
+- c and c++ can not be used as they are platform dependent languages even though very fast
+  a. c code compiled in windows becomes exe which can nt be executed on linux/mac and vice versa
+  b. hardware instruction set may be different in different machines hence compiled code may be having different instruction set
+     hence change in compiled machine and executor machine wont be compatible to execute netwrok passed program
+	 
+- we can achieve platform indepedence using interpreter, where interpreter takes source code and execute at runtime
+   but that will be slower
+- using compilation we get better performance as compiler do these optimization but can not achieve platform indepedence
+- using interpreter we can get platform indepedence but performance is compromised
+- java uses both compilation and interpreter to ensure no slowness and still platform indepedent   
+
+- green project failed in tv industry due to beeing to much advanced but same concept of netwrok communication among hetergeneous hardware systems
+  was in www too and hence it was used there , earlier www pages were static
+  java rograms in term of .class(compact bytecode) were passed over the netwrokd to browser where it gets executed
+  hence pages became dynamic
+  
+- with help of JVM byte code interpreting we achieve platform indepedence with no downgrade in execution speed
+- other programming languages like groovy, scala also get compiled into byte code.class and can be interpreted by jvm
+- JVM means java virtual machine
+  it is an abstraction of a computer, meaning in host computer another abstract computer is running
+  JVM has its own instruction set like a normal computer hardware , .class byte code contains sequence of these instruction sets
+
+- Goals of JVM
+a. interpreting .class bytecodes
+b. security
+c. jit compilation
+d. automatic memory management  
+
+- if we are running 2 java applications like spring boot/micronaut etc then actualy 2 different JVM instances will be running
+  we can check jps and it shows different process having its own JVM instances	
+  
+- class loader output is instance of java.lang.Class : same is used in reflection API
+  Remember that we have only one instance of java.lang.Class per Type(class or interface)
+  that is created lazily only when used and need not to create again
+  reusable, created only once, created lazily only when used by java command or import in another class  
+  
+- LifeTime of a type
+  type means class/interface , lifetime mean how jvm loads it , links it, executes it and g.c it
+
+Steps in lifetime of a type
+
+(Done by Class Loader Component)					(Done by Linker Component)						(Done by execution Engine component)
+Loading														Linking											Execution  
+
+a. java Hello.class								  a. verify bute code instructions						Execute the method for loaded class
+b. searches Hello .class in class path            b. provide space for static and other fields					(using instance of java.lang.Class)
+c. loads byte code instruction in .class file     c. also loads needed imported class(create object			
+d. create java.lang.Class instance and					of theses needed classes: java.lang.Class)
+   put in reusable cache for future calls         d. initialize values/fields static block etc
+												   (skipped for interface types)
+												   
+Types of class loaders
+a. Bootstrap loader: it loads oob core jdk classes : JAVA_HOME/jre/lib/rt.jar
+b. extension class loader: it loads oob jdk extensions classes: JAVA_HOME/jre/lib/extension/*.jar												   
+c. Application class Loader: loads classes present in class path: classes created by dev
+d. custom user defined class loaders
+
+When does class loader is initiated:
+//when we run the class using java command
+//when subclass is loaded
+//when object is created
+//when static method is called
+//when static field is called
+// exception: when fields is static and final it is skipped as compiler inserts raw value at compile time itself
+// using reflection
+-> for interfaces will be loaded except first one as we can not instantiate interface directly
+
+byte code verifier takes java.lang.Class object and do verification if the bytecode is correct
+rules to check
+a. final class should not be extending
+b. proper overriding rules
+c. final method should not be overridden
+d. fields should be present and should be accessible
+e. method to call should exist and should be accesible etc
+
+Runtime Data Area(JVM memory area)
+- Heap (Shared by all objects)
+ heap contains objects , including instance fields , each memory of object instance should have different copy of fields
+  eg: student one name is kanishk and for other it is krishna
+
+- Method Area (aka Metaspace(Permgen in jdk 1.7 and older)): Shared by all objects: eg class level metadata, method bytecode etc
+  We know that class level metadata like method bytecode, field names , data types
+  all these metadata will remain same for a class so need not to keep this in each instance in heap
+  that could be wastage of memory hence we can keep these inside method area
+  also we create single object on method area per class as meta  data will be same for single class
+  this is abstracted using java.lang.Class class
+
+- native heap: shared by all threads and objects: JIT code cache etc
+
+Seperate for each thread
+- Stack
+- PC: program counter
+- native method area
+
+
+benefits of automatic memory management
+a. ease of development, less time in coding and testing
+b. code is cleaner and easier to understand and hence more maintainable
+c. less chance of memory corruption error like
+ -> memory leaks : unused/ unreferenced object is nto deallocated from heap, just simply eating space
+ -> dangling memory: an old memory address may be pointing to new object, 
+  so other reference variable might give runtime error as reference type and actual heap object are different
+ c and c++ forces dev to allocate and deallocate memory and hence can cause these memory leaks and dangling memory
+
+JVM provides Garbage collector to do automatic memory management 
+  
+jai shree ganesha
+jai shree sita rama lakshman hanuman
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+G.C algorithms categories
+a. mark and sweep : mark live object and remove bad ones in seep phase
+   advantage is lesser pause time but disadvantage is after g.c free memory will be fragmented
+b. mark, sweep and compact: same as above but after sweep it compact free region
+   hence free memory will be together enuring bigger objects can be assigned here easily
+  remember in jvm based on class's instance field the size of object is managed by jvm unlike c and c++
+  so if we ensure free memory together then it will be easily allocable for bigger objects
+c. mark, sweep and copy: this is same like how generational g.c works
+   we will have 2 free segments and it ensures live area is always free, same like eden and 2 survivors technique
+
+Generational garbage collection ensures that stop the world time is reduced
+it is done using one eden space and 2 survivor spaces
+
+Generational G.C uses mark and copy algo in young generation and mark, copy and compact in serial and parallel for old generation
+but concurrent mark sweep young generation algo is same (mark and copy) but it is parallel async in old generation(parallel mark and sweep)   
+  
+example of scenario when memory leaks can occur even in java even after jvm auto memory management using G.Class
+eg: Stack of objects
+ during pop if we do  return storage[--size]  the array is still holding and that data is not supposed to be usable
+ this can cause memory leak as data is not usable but still remain in jvm heap
+ we should do : Object data= storage[--size]; storage[size] = null ; return data;	
+memory leak means any data thatis not useful but still kept in jvm heap
+ 
+memory leaks -> bad memory management -> more memory consumed-> forcing more G.C -> making more stop the world
+  -> degradataion in performance -> eventual out of memory
+hence side effects of memory leaks are bad performance and eventual out of memory error  
+
+one stack per thread -> one stack frame per method
+below is structure of single method stack frame
+Components of method frame inside stack
+a. variable array: always 0 to n index reserved for method parameters/arguments
+   then as execution happens variable are stored and pointed in this array
+b. operation stack: JVM acts like a computer, execution engine acts as CPU with its own instruction set
+   commands are given in byte code .class file based on these set of instructions
+   CPU needs register to do the tasks same to that operation stack is a stack used to run these instruction 
+   seperate operation stack for seperate method frame
+examples of bytecode instructions
+assume method have 2 args
+int x = 3; -> iconst_3(take value 3), istore_2(store 3 in index 2 of vaiable array)
+int y = 5; -> iconst_5, istore_3
+int z= x + y -> iload_2, iload_3 , iadd, istore_4
+invokespecial: constructor call using new command or super auto constructor call, private method call
+invoke virtual: instance method call : uses method table to find actual polymorphic method to get called
+invokestatic: static method or field fetch
+
