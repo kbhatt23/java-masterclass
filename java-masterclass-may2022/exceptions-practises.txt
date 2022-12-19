@@ -1,0 +1,48 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Exception handling is very important concept to create robust softwares
+meaning strong, robust, resillient softwares that handles even excpetional scenarios at runtime and gracefully handle them
+it is called exceptions because it occurs only during certain exceptional scenarios and it breaks the normal code flow execution at runtime
+
+- in java unchecked exception do not need to add throws statement nor client code has to try/catch or throows that
+ it is because these are mostly non recoverable
+ classes of unchecked exception are :
+	RuntimeException (and their children)" IllegalArgumentException, NullPointerException
+	these are mostly not needed to be handled , compiler do not forces but sometimes we can write code to handle them
+	like numberformatexception, nullpointerexception
+	Error (and their children): OutOfMemoryError, StackOverFlowError
+	generally these are not recoverable and hence never handled gracefully
+	
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Suggestions/Best Practices
+a. Always used checked exception smartly, the checked excpetions should be used when the error can be recovered
+ and we can force client to handle and recover that and move on gracefully  , overuse can cause unclean code
+b. Always Document exception even though it is checked or unchecked
+c. Never use Exception to control the flow
+   eg: 
+   while(true){
+   try{
+		Object item = nextItem() -> maybe from iterator
+	} catch(NoSuchElementFoundException){}
+	}
+	//not preferred as this will unneccessarily create an extra Object of Exception in heap
+	better use:
+	while(hasNext()){
+		Object item = nextItem();
+	}
+d. Favour use of OOB JDK exceptions instead of creating new until neccesarry
+e. Better to use Specific Exception and not Generic Exception like Throwable or Exception class
+f. Better to use precondition check for method/construtor and throw unchecked exception and also document these conditions
+   specially for public apis for private we can use assertions	
+	
+- Exception Handling helps us write robust and resillient code and softwares
+  Assertions helps us ensure the quality and checks the quality of the softwares
+- Assertions are mostly used during dev and testing time however these can be disabled during prod running time
+
+assert (boolean) : in case assertion is enabled and condition is true then fine or else it throws AssertionError
+  meaning error can not be recovered and code breaks
+Assertions are best used in parameter validation/pre condition but specially for private methods
+ for public it is better to use exceptions  
