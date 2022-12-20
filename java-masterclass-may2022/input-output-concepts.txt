@@ -1,0 +1,95 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+I/O layer is very important in any software system
+- Most of the software system do i/o with external or internal data source
+like code doing a read/wirte to a csv file/ txt fie of file system, these file or file system may be local or external
+- Also software might call external system via rest api that also fall under i/o operation
+
+- REST api call do both input as well as output
+it writes the request data and reads the response from the communication hence API calls over REST are also I/O
+- Console interation also comes under I/O
+
+I/O is challenging for programming language/framework desigers as :
+ -> there are different data sources like console,file,network,d.b etc
+ -> different modes of data fetching/writing: sequential, Random, Bytes, Bytes group, Binary, Text etc
+ hence to solve these java created different class in i/o package to handle these
+ file based, speed performer and so on
+
+Types ofSream I/O and examples
+a. Byte Stream: Data source is in binary format (non readable by human)
+   eg: reading and writing images efficiently, serialization and deserialization of java objects
+b. Charachter Stream: Data source is in text and human readable format
+   eg:    reading and writing text/csv files efficiently
+c. network I/O   
+d. console I/O   
+
+Charachter Encoding means to convert a data using specific set of charachters into char[] format
+decoding is reverse
+Also using this wan have char[] or charsequence representation for all foreign chars and words and smileys etc
+it is not secured but it is just a way of representing data so that multi lingual support occurs + data over entwork can be sent with less space
+eg: UTF-8,UTF-16,UTF-32
+
+- I/O Stream is nothing but connection b/w program in java towards source/sink data owner
+ different types of stream exist based on source like fileoutputstream , fileinputstream, objectoutputstream etc
+ also for input and output we have different class
+- Steps
+ a. Create Stream connection from program to data owner
+ b. Read/Write based on the type of stream
+ c. close the connection stream as there is a limit of max stream and if we do not close o.s wont be able to provide socket stream connection 
+ 
+ Types of I/O Stream
+ - Byte Stream: data source is in binary non human readable format: eg: images or byte representation of object(serialization)
+   Base classes used: InputStream, OutputStream 
+- Charachter Stream: Data owner is human readable char[] of charsequence like text,csv file
+   Base classes used: Reader, Writer and its children   
+How Buffering helps
+a. While writing we will not do write call towards disk for each charachter, instead we will push to buffer memory
+  buffer will be in RAM and ver fast for program once that is full at once all data is flushed to disk in single disk call
+b. While reading we will prefetch the data from disk in single read call in memory buffer and from there fast access can be done towards program  
+
+- Java support UTF-16 encoding scheme for charsequences using charachter stream like reader and writer and its subclasses
+
+Byte Stream classes: FileOutputStream and FileInputStream writes and reads data in byte[] format, faster but require little more work
+ good representation for  files like image , pdf etc
+ also have buffer memory feaures using BufferedOutputStream(FileOutputStream) and BufferedInputStream(FileInputStream)
+Charachter Stream Classes: Reader and Writer implementations
+  These internally uses byte stream implementations like FileInputStream/FileOutputStream and BufferedInputStream/BufferedOutputStream
+  
+  It transforms byte[] in form of char[] for both read and writes
+  eg: Reader,Writer, FileReader,FileWriter, BufferedReader, BufferedWriter , PrintWriter etc
+  
+  
+Use cases of serialization
+a. Save the object state into a disk file and later on recreate the object
+b. save the object state into a disk file, share the file over network or using usb and 
+recreate the object state with new object even on new machine  
+
+Converting java object into byte streams is known as serialization and reverse is deserialization
+
+serialization practical use cases
+a. share the data of object over network, like in webservice do not share json but share byte stream of object
+   it will be light weight but problem is source and sink should be of jvm/jdk implementations
+b. save d.b complex joins and put in cache like memcache/redis store jdk serialization byte stream 
+which is lighter and easier to reconstruct   
+
+serialization rules
+a. primitives and arrays are auto serializable
+b. it has ability to store complete object graph:
+ fails even if one instance field class is not implementing Serializable interface
+c. Static fields are not serializable: as it has same value for all instance , only one copy of this field exist
+  so static fields are ignored completely to save disk file memory size
+d. if superclass is serializable then child class is auto serializable
+e. if child is serializable and parent is not then parents fields are skipped in disk serialization
+   and during deserialization we need no arg constructor in super class
+f. transient to skip field serialization   
+
+-- concept of serialversionid in Serializable interface implementing classes
+ during serialization we did not have gender field and .ser file is generated
+ if class is added with new field gender and deserialization is done using old .ser file
+ then it causes runtime excecption during serialization as jvm had inserted internal serial version id 
+ and now since new version id is there in .class loader it gives runtime exception
+ to save it we can add hardcoded static final serialvuuid long value
+ so that for old .ser file it will be null/0/false/default 
+ for new ones it will store that field and reconstruct that field
+ 
