@@ -1,0 +1,166 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+java.util package contains utility classes oob so that other dev need not to reinvent
+collection framework provides oob data structure which are highly efficient and tried and tested
+so that we need not to reinvent from scratch, also these will be used in most projects so why to reinvent everywhere and save time for our development
+
+Since collection stores more than one element hence the name collection
+
+Original data structures are object and array but for storing more than one element we have array
+Limitations of array d.save
+a. it is of fixed size: can not regrow
+b. can store data of same type
+c. searching is linear O(n) so for searching we can use other D.S like hashmap , hashset etc O(1)
+
+//for comparison all collections uses equals , except hash ones that uses hashcode and equals together
+		//tree ones uses only compare method and equals hashcode are ignored
+
+a. Iterator is cursor with removal option for all the collections
+b. ListIterator is cursor only for list	with forward and backward movement plus add and set methods
+c. Enumeration is cursor for legacy classes, slower and is completely read only
+	
+ListIterator interface extends Iterator
+it has extra method for previous side iterations , add and set methods are also provide extra
+ListIterator is only provided for List interface implementors		
+
+- Queue D.S is used for FIFA and remember it allows nulls and duplicates
+  but there are no indices, always data is pushed to tail and deleted from head for O(1) time complexity
+  we can not fetch item at specific index from queue interface but using linkedlist implementation and interface as list we can
+  linked list is used for both stack and queue however for queue we use Queue interface to enforce contract
+  and for stack we use deque and appropriate methods
+  
+  Dequeu extends Queue where elements can be added or removed from head or tail in combination
+  hence can be used both as stack and queue
+  - famous implementations of Dequeu interface
+    a. LinkedList
+	b.ArrayDeque
+	ArrayDeque is implementation of Dequeu but using Array as internal storage and resizable
+	ArrayDeque do not allow null at all and do not implement List interface unlike LinkedList pure queue interface implementation classes
+	It performs better in iteration than LinkedList hence jdk suggest to prefer ArrayDeque over LinkedList
+	it has lesser memory footprint as for LinkedList for huge elements very huge amount of Node objects will be created on heap
+	during G.C since so many objects are to be cleaned it can have longer pauses, hence slower as well
+	
+- Remember ArrayDeque do not do the shifting of cells while removing elements from oth index of array unlike arraylist
+  it uses cyclic array so that item can be added at 0 or at the last and removal can also occur at 0 or last at O(1) time
+  even in LinkedList it is O(1) but due to Node object memory footprint for bigger queue ArrayDequeu is better in performance and also light wright for G.C and Heap
+  
+ArrayDeque vs LinkedList
+a. Do not implement List interface
+b. uses array and not node
+c. faster in insertion and removal
+d. do not put burden on JVM heap and hence do not slow down other process also
+e. do not trouble G.C as much as LinkedList
+f. do not allow nulls elements a all
+g. time complexity is same as linkedlist for stack and queue operations
+ however unlike arraylist no need to shift array cells as it is cyclic array
+ 	
+	
+	
+Hashtable is older implementation of Map	
+a. Do not allow null key or null value
+b. all methods are synchronized
+
+HashSet is based on HashMap
+LinkedHashSet is based on LinkedHashMap
+TreeSet is based on TreeMap
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Sorted Set implementation TreeSet Rules
+a. Entity should be comparable implementor , if not gives exception on calling .add method
+b. Also we can pass Comparator to not let implement Comparable or even override sorting criteria
+c. null can not be inserted gives exception while calling .add method
+d. subset can be created and rule is same as array sublist method
+   after subset/sublist method call both sets are bound together
+   in subset can not add element outside of range 
+   also in main set can not add item out of range os subset's range (weird)
+   
+- TreeSet uses BST in the form of red black tree: uses TreeMap   
+
+- If we use keySet method of map 
+  then using this Set<K> we get original view, if we remove element using this set's iterator
+  it will actually remove from original map, same will happen for entrySet Set<Entry<K,V>>
+//we know LRUcache is good usecase of Linkedhashmap
+// if accessorder is false it is based on insertion order
+//if set to true it is based on access order  
+
+LRUcache vs normal linkedhashmap
+a. in linkedhashmap only thing matter is put method, does not matter how many times what key was viewed
+   it always preserve the order of inertion and not order of access
+b. LRUcache ensures that it updates the tail of the linkedlist to either put method call or get method call object
+   get and put both updates the tail and once size is full the head item is removed
+  also print of map is always from head to tail of inner linked list   
+  
+- methods present in sortedmap and sortedset provided viewed collection
+  eg: subset, headset and tailset provide range view
+  once fetched it forces main set or child subset not to allow any data outside this range
+  in subset or main set if data is added outside this range it throws exception
+  also data inserted at ony one of this set within the rang ewill reflect in other set
+  
+  in case of keyset, entryset methods if we remove data from any of these it will get removed from main set/map also
+  hence the name viewed collection, but can not add in these subset it throws exception: unsupportedOperationException
+  
+  
+//Arrays.asList creates list backed by fixed size array
+// in list we can not add any new item as inner array is not growable
+//hence in main array we can not add new item as we can not grow it
+//nor we can grow the items using list.add method as inner array is not growable  
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+
+- Arrays is a class present on java.util package
+  Used for general purpose utility on array d.S which otherwise would be needed to be written by dev in all projects
+  We learned about collections which are D.S and provide code for general functionalities
+  
+  but since common functionalities exists over Array and can be used in multiple projects jdk have provided Arrays utility class
+  
+  - Arrays constructor is private to enforce use only static methods in static ways only
+  - asList take T... so if primitive array is passed it will consider it as single object and hence will create a twod ArrayList
+    meaning List<int[]> so better use Integer[] in these cases
+- Arrays provide toString method to convert array into representable string	
+	
+- JDK Arrays class uses Merge Sort for Object arrays and quicksort for primitive arrays	
+
+- Remember BinarySearch is for sorted Items and hence for objects it uses compare methods and not equals method
+- By default the Arrays.copyOf method do shallow copy for deep copy use deepcopy method
+- Arrays.fill method can be used to initialize array index values with same value for all the indices
+
+- jdk8 added parallel operations/methods for Arrays class like
+  parallelSort: in case array items size is more than 8192 than it uses multi core otherwise single core based: simple sort
+  
+- Collections utility class is present in java.util package and is same like Arrays class
+  methods
+a.1.  addAll(Collection<T> c, T... a) : using this we can add an array, or  vararg items to collection
+  we know collection have constructors and addAll methods but that takes Collection as input
+  we can do list.addAll(Arrays.asList(array)) : but that will be slower and will create one extra temp Arraylist object  
+  benefits of Collections.addAll
+  a. no need to create extra view only arraylist object
+  b. faster in performance
+  c. less load in G.C due to another object created
+  
+  2. sort : takes list only , pass directly to list implementation
+      for arraylist it already have array and sort using that,
+	  for linkedlist first convert to array sort and then again create list from that sorted array hence slower/inefficient
+	  
+  3. binarySearch: log n search if item is containing in the list (for hasset and linkedhashset it is O(1) and for treeset it is logn)	  
+	for list only
+  4. reverse the same list: for list only
+  5. swap method : for list only
+  6. shuffle the list: for list only
+  7. freequency: count of object equals in the collection
+  8. singletonList(return list), singleton(return set), singletonmap(return map) 
+     these collections will have single entry , single element or single key value pair
+	 if we try to add one more it throws runtimeexception: unsupportedOperationException
+  9. unmodifiablecollection : pass the collection and it gives a proxy object
+     this proxy object will have read only methods for write methods it throws runtimeexception : unsupportedOperationException  
+	 
+  10. emptyList, emptyMAp, emptySet etc:
+   one of the effective java suggestion is to return empty collection/map and not null
+   so that client code is cleaner but if we are always creating a new List/map /set for null case for each method call
+   it will put more load to G.C and heap lowering performance and eating unnecessary heap space
+  we can use Collections.emptyList method that always return same static list for each kind of method when callend any n number of time
+  also this EmptyList clas methods have only isEmpty method and other unuseful method throws unsupportedOperationException  
