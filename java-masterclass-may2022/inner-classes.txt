@@ -1,0 +1,102 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Inner classes are extensively used in collection framework
+- we can have nested classes as well as interfaces
+eg: Entry inside map class is a nested interface
+  EntryIterator implements Iterator is a nested class for hashmap and other map implementors
+  
+Why do we need nested class when we can create these classes on package as outer class
+- It is better design in cases when we know innerclass can only be used by outer class
+ otherwise it can cause class pollution we are creating multiple classes that are only going to be used by main class
+hence for better design keep these classes inside main class and express to other dev that these inner classes are only used by main class 
+
+- Static inner classes are also member of class
+ we know any static context can access only static member of class
+ now since class is also a member of outer class so static inner class are static member only
+ hence static inner class can access only static fields of main class and instance fields can not be accessed
+ 
+- common proprties for all inner classes + static inner classes
+ 
+a. Since inner classes & static inner classes are nothing but a class member it can have all 4 access modifier : private,public,protected and default
+  however main outer class can have only public and default
+  
+- inner classes and static inner classes can access even private fields of main class and vice versa
+ all private fields can be accessed by outer class and also inner class can access private fields of outer class
+  only for inner class it can refer instance methods and variable private or anything without creating object
+as inner class object lives inside the outer class object
+- compiler creates 2 .class files one for outer and one for inner
+ eg for static and inner classes
+ Outer.class , Outer$InncerClassName.class ,Outer$AnotherClass.class 
+ for anonymous inner classes:
+ Outer.class, Outer$1.class, Outer$2.class etc
+ meaning formulae is : OuterClassName.class and OuterClassName$InnerClassName.class
+ since anonymous class do not have name and hence it is OuterClassName$1.class and so on
+ 
+Inner classes/ Non static member class 
+- object of outer class is not gced until inner class object is alive 
+
+We know innerclass gets compied into OuterClassName$InnerClassName.class meaning seperate class
+ so the constructor fo inner class is called by passing (this) reference so that inner class can access instance fields/methods of outerclass using this reference
+ 
+- Remember the inner non static class can not have static fields/methods
+  it is because it is like field of main class and inner class can not live without outerclass instance
+  and hence in static non inner class we can not add static field and methods  
+  
+  Demonstrate method duplication and this.methodcall from inner class
+  method could be present in inner as well as outerclass
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Rules to figure field/method in the inner class
+ go(); or filedName;
+ if method/field exist in inner class consider that if not take from outer class if not there then give compilation error
+ 
+ this.go() this.filedName : must be present in inner class or else gives compilation error
+ 
+ if exist in both inner and outer than use OuterClassName.this.field/method
+ 
+- Anonymous inner class do not have a name
+  it is declared and instantiated in single step
+  we directly create the object at the same place where it is declared  
+  It provides signature for interface as well as class : can override or implement abstract behavior
+  we can add extra method in anonymous inner class but that wont be usable as reference variable type is not having that method
+
+- common use case of anonymous classes are object function or strategies  
+Anonymous inner class suggestions from effective java
+a. should be at max 10 line, if more better create concrete class
+b. if instantiated and declared within method it gets created that many times
+  for each method call one new object is created
+ so good standard is to create static final instance field and share that to method: better space and performnance efficiency 
+c. anonymous class can access instance field of outer class but not in case of static methods
+  as static methods do not have this access and hence instance fields can not be accesed inside methods that have anonymous class 
+d. Anonymous inner classes can not have constructor as it do not have name
+  but can have init block to instantiate any instance field using method local variable or class local variable 
+  
+- limitations of anonymous inner classes
+a. can not implement multiple interfaces nor can have extend one class and n interface : method local class can do this
+b. can not have constructors but have init methods as there is no class name: method local class can do this
+c. code can use methods only present in inherted type, extra methods are gone: method local class can do this
+
+- method local class
+
+- Static nested class do not need outer class object to be created
+  both are independent
+  also static inner class can access only static field/methods of outer clas even though they are private
+  static inner class have better performnance as it do not need to hold hidden object reference of outer class
+  each of class's object can live seperately
+  in normal inner class : inner clas used ot hold hidden object reference of outer class
+  so 2 objects were creaed but in static inner class only one object an abe created as they can live and die seperately
+  
+  can have static as well as instance members : feilds and methods internally
+  write code on example of sorted factory field for cpmarator with multiple inheritance
+  example of nested static class
+  String.case_insenstive_comparator
+  can not use anonymous classes as that can not implement 2 interface
+  also why to create class at different package
+  lets use inner clas but what: since this class need not access any instance field/methods of String(outer) class
+  create static inner clas with private modifier: just one object is created
+  for instance inner class 2 objects are created one for outer and one for inner and inner hold outer instance with a hidden field
+  here we need not outer class instance members so for performnance and space efficiency best to use static inner class
+  
