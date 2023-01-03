@@ -1,0 +1,115 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- JDK designers implemented enums starting from 1.5 version
+- Prior to jdk 5 dev used to write compile time constants using int values: aka int enum constants
+  but it had below issues:
+  a. no type safety in methods at compile time: 
+  eg a method is expecting value 0 or 1 and by mistake it can pass 2 that is not expected in server code
+  b. brittle code: lets say the constant value is changed so client dev also need to update and that can be a miss
+  c. can not print the name of the type directly we need to write extra code
+    eg MOVIE_HORR_GENRE = 0 ; we can only know the value 0 we need to write extra method using reflection or hardcoded string for the name 
+  d. can print/ iterate all the similarly grouped constant values with their names	
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- in summary enum is a class that has a fixed set of constants
+- each constant is nothing but type of enum/instance of the type
+- it solves the deficiencies present in int enum patters mentioned above
+  
+- on compiling jdk creates a class for the enum with below features
+a. class is final so that no one can extend and override behavior/features
+b. can not call constructor using new keyword for enum as the constructor is private 
+c. an enum already extends java.lang.Enum and hence it can implement n interfaces but can extend 0 classes
+d. Enum class implements Serializable and Comparable and hence enum is sortable by its ordinal value 
+  
+- Enum class overrides clone method and throws clonenotsupportedexception
+ due to this the Enum objects are singleton, each type of enum has single object per JVM
+it can not be cloned and hence no chance of creating 2 objects
+it can not be used with reflection hence no chance of creating 2 objects 
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Om shree Ganeshaya namah
+
+Om shree sita rama lakshman hanuman
+
+Can we write enum class on our side
+: yes 
+
+It will be very good design but it has issues
+
+a. We have to write the code in each project on its own
+
+b. Too much time to write this simple code
+
+c. Also the same will be across all the projects, boilerplate code is not reusable across project
+
+d. Tough to implement and chances of bug is there
+
+e. It is very verbose and hence code readability goes
+
+Hence jdk designers created enum type in jdk1.5+ to make this boilerplate OOB and simple for dev
+
+We can start with an enum with constant only
+However we can have state and methods in enum for each instance type
+
+Also we can have private constructor only(public, default, protected constructor not allowed)
+
+Enums can also define static methods and fields, That will remain same over the class and won’t be different for each instance
+
+Also static method won’t be able to access instance fields as that is class level and common to all objects
+
+In normal int enum patter using classes we can have compile time constant
+
+However we can not have instance specific fields/methods in that way but enum allows constant object specific fields and methods 
+
+and static method and static fields is also possible but will be same for all instances with no access of instance methods/fields/this
+
+
+
+- we can have nested enum inside a class or interface: after compiling: Book.class, Boo$BookGenre.class
+
+However that enum is by default implicitly static
+
+Meaning it can not access non static fields/methods of main outer class just like static nested class
+
+Difference b/w static inner class and static enum:
+
+Static inner class can be instantiated but static enum can not be instantiated
+
+
+
+
+
+We can implement constant specific behaviour using switch case
+
+But there is a problem
+
+-  if a new constant is added we need to en sure the method gets updated with another switch case or else it will go to default behaviour
+
+
+- if we have constant specific method in enum then the compiled enum 's class is not final
+  it is because for each constant specific it extends this class and create anonymous inner class
+eg:
+  enum Categories{
+  public abstract void print();
+  ONE{
+	public void print(){}
+  },TWO{
+	public void print(){}
+  }
+  }  
+  in above case there will 3 classes
+  
+  Categories.class
+  Categories$1.class: anonymous inner class that extends Categories.class and override its method
+  Categories$2.class: anonymous inner class that extends Categories.class and override its method
+  hence to allow Categories class to be extendible it is not made final during compilation process
+  
+  
+In enum based constant specific behavior dev will be forced to add the behaviour for each constant
+
+This way we have compiler support to dev so that dev do not forget behaviour of that newly added constant
