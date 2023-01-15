@@ -1,0 +1,225 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- one of the major goal of java was to provide multi threading support/concurrency
+- multi tasking means able to perform multiple tasks at same time
+
+motivation behind multithreading
+a. to be able to do more tasks in less time
+b. to be able to achieve multi tasking 
+
+- sequential programming is less complicated when compared to concurrent programming
+  however with concurrency we can achieve higher throughput and better machine/cpu/resource utilization
+  but also we need to write code in safe way or else results can be wrong: extra care while programming
+  
+- Whenever we open an application like spring boot/ chrome/ notepad
+ O.S assign a process  to execute and manage that application
+ a process have non shareable memory and typically are heavy weight
+ To actually execute a task within a process a thread has to eb created
+- A Thread is light weight executional unit within a process and it gets served by processor
+ eg we opena  tab in chrome , a link is clicked
+ so chrome has a process with multiple threads that gets created on each action and after execution dies
+ 
+Thread:
+- single small lightweight execution within a process
+- light weight
+- process can contain multiple threads
+- Thread share the memory shared by single process
+- A Process do not share any memory with other process, but multiple threads within this process share the same memory
+
+However each thread has its own local cache, stack, local variables : volatile keyword needed for that
+
+Good to remember: Each Thread shares same heap memory that is provided by process
+but cache, stack and local variable are different for each thread
+ 
+ 
+Types of threads
+a. User Thread
+  Created using programs and hence do not die until it is done
+  JVM creates automatically a user thread known as main thread that executes the main method
+  hence java is atleast having one threaded that is mai thread that runs main methods
+b. Daemon Threads: 
+  These are low priority background tasks like G.C
+  these are low priority and hence gets ignored if none of the user thread exist  
+- We should not rely on Thread scheduler behavior as it may run the task, stop it do context switching and run another task
+  we can not predict the behavior as this is out of control of dev and is completely managed by O.S  
+  
+- Why it is better to run threads using runnable interface
+a. we have single responsiblity principle followed here
+  Thread class is for representing worker
+  Runnable instance represent Task
+ Hence we have seggregation of concern and single reponsilbity principle implemented using this approach
+b. we can extend only one class in java so using itnerface we have that flexibility left 
+
+Runnable interface contract represent the actual task to be done
+Thread insance represent the actual worker
+hence according to design principle it is better to have seggregate classes/interfaces
+
+- There is no gurantee that there will be no context switching
+  but high priority threads are guranteed to have more cpu time
+  
+- good use case for race condition
+  we have a bank account object that is shared to multiple joint users
+  each user will be associated with thread but now bank account object is common to both the threads
+  each can withdraw amount at the same time or add or withdraw at the same time that causes race condition  
+
+
+- Sharing Object among thread is fine, Mutation is also fine in single thread
+ but shared mutation among thread is cause of race condition that causes data corruption  
+ 
+- JMM or java memory model provides rules that specifies gurantees
+  gurantees that few things will happen in order during multi threaded environemnt
+eg: for synchronised method it is guranteed that another thread cana aquire lock and run method only when previous thread unhold the lock  
+
+There are multiple scenarios where happens before gurantee is maintained
+a. sequential program execution 
+   in single thread of execution line 1 is guranteed to happen before line 2 and so on
+b. synchronised: another thread will wait until previous thread does its job and release lock
+	provided lock object is same for both the threads
+c. volatile	variable: any update/write to memory is guranteed to be done only after updated read from memory
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+d. finalize: finalize is guranteed to be called only after constructor ending bracket
+
+- As per effective java recommendation 
+  Atomic variables are better than volatile
+  it also provides memory visibility plus it also provide atomic operation without synchronisation
+  Hence along with beeing volatile the atomic variable is thread safe and provide atomic operation with no lock
+  -> volatile(implicit memory visiblity) + thread safe + better performance than synchronised/locks
+  hence for atomic variables we need not to add volatile keyword as that is implicit
+
+- lock free algo are better than synchronised block
+ as if more than one thread try to execute synchronised block other threads go to blocked state
+ and once lock is available notifyall call is done to all waiting threads
+ one of the thread goes to runnable state and from there it is picked to be in running state
+ hence this much scheduling add additional overhead
+ 
+- Atomic variabe works using comapre and swap algo which is synchronised/locks free
+ hence no overhead of threads blocking state , context switch to runnable and thread scheduler overhead 
+ 
+- We need Thread management tools like executor framework when we are dealing with production sandard scenarios with huge amount of threads 
+
+- difference b/w sleep and wait method
+  sleep is a static method in Thread class, wait is a instance method in object class
+  sleep will suspend the thread for n ms and then it again comes to runnable state but the lock wont be released
+  meaning if other threads are waiting for lock they keep on waiting but in case of wait the thread suspends + lock is released
+  so that other thread can do the task and after synchronised block of Thread 2 is over thread one can do the remaining job again
+  
+- good cases/suggestions while using wait/notify methods
+a. always should use while loop and not if condition due to spurious lock release
+b. since we are keeping wait/notify inside a synchronised block we have happens before gurantee
+   hence need not volatile field as synchronisation ensures latest cache update/write/read  
+
+- So far we have seen thread stopped only once job is done : that is dead state
+  but even if job is half done we can interrupt and stop thread runing currnet job
+  that is called thread interruption
+  eg: if a thread is taking way too much time lets interrupt it after timeout
+  
+  Thread method from thread is deprecated and there is no force stop except interruption
+  Java thread tries to terminate gracefully onl and not abrubtly
+  
+Why java provides only cooperative and graceful way of thread interruption
+if thread is killed abrubtly and forcefully it can cause bad state/half state in shared object
+so instead thread should be notified that i am closing u please clear ur things like commit cache and then die  
+
+we can use volatile field to write manual interruption code
+but it lacks below
+a. wait and sleep method threads will keep on blocking
+b. io operation task will still be blocking
+we can handle these using java based interruption of threads and can do cleanup gracefully
+
+scenarios to handle thread interruption
+a. check the interrupt flag of thread if true stop the task in code manually
+b. if thread is waiting or sleeping sleep/wait is ignored and blocking thread is awakened by throwing a InterruptedException
+c. synchronized blocks: this is infinite and can not be interrupted: better to use Reentrant locks
+d. i/o operation: we need to write code to close the stream either by flag or exception
+
+- How will you implement i/o call with timeout like network call with timeout using jdk only and not framework
+ we will create a sperate thread that will sleep for n seconds(configurable) and after that it will check if stream/thread is alive
+ and if alive it interrupt the thread and also close the i/o connection stream
+ 
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Synchronized blocks do not unlock the lock in case of interruption
+  however using explicit lock using Lock interface we can ask for lock with interruption
+  meaning a thread can force to unaquire the lock whihc is locked by an existing Thread
+
+ methods in lock
+ a. lock : lock with no time limit, keep on waiting until lock is aquired + no interruption possible
+ b. lockInterruptily: lock with no time limit, keep on waiting until lock is aquired + but another thread can interrupt this thread
+    on interruption it releases lock
+ c. tryLock: if aquired true or false  with no blocking + no interruption by another thread
+ d. tryLock(long ms): if aquired true or false but wait until timeout , after timeout returns false 
+    + interruption possible
+ 
+- diff b/w synchronised and lock
+a. synchronised is waiting infinitely with Lock we can have timed wait or moment attempt
+b. synchronised can not be interrupted and lock wont be release util manual code is written
+   in Lock we have lockInterruptily method for same
+c. no fairness policy of waiting threads
+d. synchronised block can not aquire the lock multiple time like count is 1 unlike ReentrantLock
+
+- Remember Lock interface provides same memory visibility gurantee just like Synchronized blocks
+
+- In Synchronized Blocks we can aquire lock by a single thread only once
+  but in case of ReentrantLock a single thread can aquire n time but it must unlock n times for other thread to get lock to execute code   
+ 
+ 
+- Tricky point:
+ A thread that is executing a synchronised block can still go to runnable and other thread can come and aquire lock and worker
+ context switching is possible even in synchronised blocks among threads 
+ 
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Up until now we used thread low level util, where for each tas one new thread is created
+  or each task this new thread do the job and dies and is not reusable
+ for low scale systems this is fine but it cause huge problems for high scale systems 
+in high scale systems a huge amount of users will create huge threads and if for ach of this aaction a new threadis created thats huge trouble
+a. creating a new thread is time consuming and can cost a lot and also will be non reusable
+b. each thread takes memory and that is not good
+c. killing thread on G.C cause more work to be done by JVM
+d. there is no limit of threads to be created
+  if that is the case we can create so many threads that for JVM out of memory error will occur
+  
+using executor framework we can solve this issue
+we do not create thread manually and whole thread lifecycle management and thread cooperation is taken by framework
+it creates threads, manage them cooperate with them for whole lifecycle management
+
+Executor framework is a powerful task execution engine  
+ 
+Ease of coding is good in executor framework as we do not create low level thread objects
+we just create the task and using Executors static factory methods create the type of thread pool we want 
+
+Executors.newFixedThreadPool : takes input as max threads
+initially creates no thread but as tasks are submitted more threads are created up until the max thread
+This min and max thread concept is similar to that of autoscaling groups
+starts with min and with more use keep on adding new items until max is reached
+and based on configurable time once no new task is added it reduces the thread
+
+Executors.newCachedPool:
+there is no block/wait in job queue
+if thread is alive aquire the thread and do the task
+if not there create new thread and do the job
+keep this new thread in the pool for max idel seconds and that can be reusable for that time
+very good performant but for low scale systems means when scale i not very huge
+for very huge scale newFixedThreadPool is preferred
+
+Note newCachedPool keeps on creating new thread and there is no boundary and hence good for systems with medium or less scale and have good performance
+for high sclae can cause out of memory error
+
+interfaces involved
+    Executor
+	   |
+	ExecutorService : Executors static util class method newFixedThreadPool newCachedPool and newSingleThreadPool return this
+       |
+    ScheduledExecutorService : 	   Executors static util class method newScheudledPool returns this
+	
+Scheduledthreadpool can do 3 things
+a. delay task : meaning do the task after specific delay but only once
+  meaning submit the task now but background threadpool will run that after mentioned delay
+b. scheduled basis : every 2 mins etc
+c. fixed rate: same as above but with initial delay  
