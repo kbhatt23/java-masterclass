@@ -1,0 +1,85 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Java is an object oriented programming language that helps modelling rel life scenarios easily
+LISP like programming support functional programming paradigm
+- Functions as first class citizens unlike objects in oop
+- Better code readability
+- Less verbose
+- Easily manintainable
+- More reusable
+- Easily parallelizable
+
+- OOPS based or imperative based are sequential in nature
+  however functional is more declarative in nature and hence more readable and eligent and hence reduces dev and maintainance cost
+
+- JDK8 introduced functional programming making it oop + fp paradigm combined
+
+- Before jdk8 we could pass only objects and primitives in a method and also return the same
+  meaning java was by default object first class driven
+  in jdk8 we could pass a function as an argument as well as return the same
+  hence jdk8 introduced functions as first class citizens
+  
+- Remember that before jdk8 we used to pass function as citizens only via passing object
+  eg using anonymous innner class
+  disadvantages: creates 2 class after compiling, more verbose too much noise, less readable and less reusable
+  not memory efficient, not performance efficient
+  
+  
+- Lambda is nothing but an anonymous method
+ meaning it defines method argument, method body and method return   
+ but have no name nor it is assigned to any class
+ can be used for passing methods in argument or in return type of a method: higher order function
+
+- before jdk8 in java anonymous classes were used as passing behavior to a method
+  
+- hisotry of lambda comes from lambda function used in mathematical calculus to represent a function 
+LISP used this concept to create first functional programming language ever
+ lambda calculus actually represent a method meaning arguments and body  
+ Root and core of all functional programming language is lambda calculus which actually represent a function
+ dunction with no name but has arguments and body and return 
+
+- Lambda expression can be only used to represent instance of a functional interface only 
+
+diff b/w lambdas and anonymous inner classes
+a. anonymous inner class can represent more than one method but lambda has one method only
+b. anonymous inner class can be used to instantiate and override any class/abstract class and interface
+  but lambda works onl for functional interface , not even abstract classes
+c. more than one .class are compiled for anonymous inner class hence ar less space efficient
+d. lambdas are lazy and hence better
+e. lambdas are more performance efficient as well
+f. lambda is more declarative and less verbose
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- remember method and constructor reference are applicable only for functional interface target type , just ike lambda
+- better cleaner compact lambda replacement
+
+- same rule applies to constructor reference as well
+
+- Stream API uses functional interfaces so knowledge is needed for lambdas, method reference, constructor reference , functional interfaces etc
+- Stream API can help perform sql like operations on data source primarily collection, could be D.B / file etc
+
+- We could implement/perform SQL opeartions on collections before jdk but using custom code
+  drawbacks
+  a. less readable, as it is imperative: showing how to do and less on what to do
+  b. higher cost of maintainance as code is less readable and hence takes more time in bugs/features addition
+  c. different code is needed to parallelize the operations
+  
+D.B is declarative in nature it owns the data and client eneed to pass SQL : just what is needed
+ how it is implemented is within SQL D.Before
+in the same way if we use Stream api it allows SQL like declarative operation on sequence of data 
+how it is implemented is within the stream api but we just tell as a dev what is needed 
+
+- Java architechts ensured that stream api is useful for dev
+ hence they did not introduce stream before jdk8
+ as without lambas/method reference and functional interface it would not be elegant to use
+ as anonymous classes are verbose and also is less efficient when it comes to space and time
+ 
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- if we are using Collectors.toMap in a list
+ in case of collision runtime exception occurs,  we need to use appropriate overloaded method Collectors.toMap
+  so that in case of collision of key it either overrides with new or use somme logic to find appropriate entry 
