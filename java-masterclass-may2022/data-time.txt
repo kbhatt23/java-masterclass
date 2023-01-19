@@ -1,0 +1,32 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Humans understand date in format of yyy,mm,dd hh etc
+however computer do not understand it so easily
+- Hence Epoch time was set in unix/linux and same linux concept is taken even in java programming
+ epoch start time is: 01/01/1970 UTC time zone based
+ 
+- jdk1 had java.util.Date instance but it had various issues
+  its time starts from jan 1 1990 
+  so to address Calendar class was added with Date beeing there for backward compatibility
+  hence Date constructor is deprecated and Calendar class has to be used since jdk1.1
+  
+  Calendar class fixed issue with year starting from 1900 but month still starts from 0 as Jan
+  
+issues/limitations with date and calendar
+a. date constructor takes year starting from 1900 , month from 0 as Jan causing confusion for dev
+b. hence calendar class was added and Date class was not removed for backward compatibility,
+   constructor was deprecated but dev can still use 
+c. now 2 classes cause confusion for dev as which one to use
+d. both classes are mutable and not thread safe
+e. month in Calendar still starts from 0 as Jan
+f.Date class do not have timezone capability, Calendar has it and we must use get(month), get(hour) etc
+  the date will get converted to system standard only(ist for me)
+g. can not not use date and time seperately
+h. mutable instances and hence not thread safe
+
+new date time:
+a. added in jdk8
+b. inspired by joda api based on iso standards
+c. even joda api suggest to use new date time api as that is faster  
+   
