@@ -11,6 +11,7 @@ public class CofeeEnumTest {
 		CofeeType[] cofees = CofeeType.values();
 		for(CofeeType cofee : cofees) {
 			System.out.println("Price of type "+cofee.name()+" is "+cofee.getPrice());
+			cofee.prepareCofee();
 		}
 	}
 }
@@ -18,7 +19,19 @@ public class CofeeEnumTest {
 //enum cna be declared withing the class or as a seperate file
 enum CofeeType {
 	// each constatnt is type of Cofeetype
-	SMALL(10), BIG(15), LARGE(20);
+	SMALL(10){
+		public  void prepareCofee() {
+			System.out.println("preapring small cofee");
+		}
+	}, BIG(15){
+		public  void prepareCofee() {
+			System.out.println("preapring big cofee");
+		}
+	}, LARGE(20){
+		public  void prepareCofee() {
+			System.out.println("preapring large cofee");
+		}
+	};
 
 	// no need to add finla , as enum onstructor can be called only through enum
 	// only internally
@@ -33,5 +46,7 @@ enum CofeeType {
 	/* public */ private CofeeType(int price) {
 		this.price = price;
 	}
+	
+	public abstract void prepareCofee();
 
 }

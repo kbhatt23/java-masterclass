@@ -1,0 +1,179 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Motivation for jdk architechts to introduce generics
+- We know that polymorphism helps in creae reuable/generic code
+  we can write code to interface or superclass and same code can be used by its children/implementor class
+  -> helps in writing more generalized / reusable code
+- prior to jdk 5 it was very common to use Object class so that any generalized children can be passed
+  hence collections prior to jdk 5 were using object to store data
+
+- USing java.lang.Object there is code reuable/generic
+but no compile time safety check
+//there is no type safety at compile time
+//intentions is to write generic reusable code + compile time safety => generics  
+overall problems with object based generic code
+a. Object is too generic meaning we can set data of different types that has no ineritance heirachy
+b. runtime classcastexception can occur
+c. extra code to downcast/typecast
+
+- Generics can help write generic code but also support compile type safety unlike Object class
+ Remember generics role is only at compile time and ignored at runtime
+ 
+Benefits of generics
+a. Compile type safety + generic code
+b. cleaner code : no explicit downcast needed
+c. more expressive code: more readable code 
+
+Naming convention of typed parameter
+a. use uppecase single charachter : like T , S, U and not e ,k, v etc
+b. for collections single entries use: E, for map: K,V meaning take first charachter of actual noun in upper cae
+  N for numbers
+c. for any other type: start with T,S,U,V .. etc
+
+
+Restrictions of Generics
+a. We can not use primitive for type in generics: Store<int>  : not allowed, but  Store<Integer> , Store<int[]> is allowed as int[] is object
+b. Typed parameter at class/interface level can not be used in static methods/ static fields	
+ Why static fields/methods can not use class level generic type:
+  as there is a single copy of static fields.methods
+  but generic type at class level vary for different object type
+  eg: SET<String> and Set<Book> type parameter is different hence it is not possible for static field to access and use them
+ 
+c. We can not create array of generic Type, eg
+ T [] a = new T[2]; -> not allowed
+ T[] a = new Object[2]; works fine
+d. -> since compiler removes LIST<Book> to List
+  if we have 2 methods one having List<String> and other List<Integer> or even List raw compiler considers them same
+  and hence not a valid overload causing compiler error
+  eg:
+  	private static void fake1(List<String> input) {
+
+	}
+
+	private static void fake1(List<Integer> input) {
+
+	} // these are same for compiler and hence will give compiler error
+	also same for 
+		private static void fake1(List<String> input) {
+
+	}
+
+	private static void fake1(List input) {
+
+	}
+
+e. Arrays are reified meaning at runtime while storing data in array we get arraystoreexception if wrong data type is passed
+  but in case of generics there is no reification meaning at runtime there is no data type check
+  but while fetching there is implicit cast that cause classcastexception at runtime while reading the data
+  compiler do type erasure and completely all are converted to object type
+f. we can not do below
+  public class CustomException<T>  extends Exception{}
+  -> Any subclass of Throwable and Exception can not use generic at class level
+
+ 
+- We must remember that generics is only at compile time
+  meaning generic role is only at compile time and there is no role of generics at runtime
+ Type Erasure comes in while compiler is compiling java code
+ it removes the type inside the generic option and replace it with Object or closest class 
+ during read/write methods it adds extra code during compilation process
+ like for get it auto type cast and also while setting it checks the data type and gives compiler error if needed
+ Compiler job = Type Erasure + Code insertion for casting and compiling
+ 
+- valid bounds : done using extends : remain same for class and interface
+ a. class
+ b. interface
+ c. enum
+ e. parameterized class/interface types
+ 
+ bound rules
+- we can have multiple bound possible however the instantiating declaration should extend/implement both
+ eg: SampleClass<T extends Serializable & List>
+valid :  SampleClass<ArrayList<>> but invalid: SampleClass<List> : as List is not in inheritance tree of Serializable
+- for multiple bound case we can have only single class and n number of interfaces
+  meaning generic type can extend 0 or 1 class and 0 - n interfaces
+  also if class exist must be first and then can have any n interfaces
+  
+- wildcard bounded or unbounded can only be used in declaration side can not be used in right hande side of '=' operator
+- ? always means wildcard where nothing can be mutated but read can be done
+ ? means ? extends object hence can take List<String>, List<Object> or List<Number> anything  
+ unbounded wildcard is better than <Object> as here at compile time we can not mutate and corrupt the data
+ also unlike <object> we can assign new <String> <Book> anything however to support dataincorruption it do not let mutate data using compiler error
+ 
+- How does unbounded wildcard / bounded wildcard ensures type safety for muating methods
+  it gives compiler error in case we are calling any method that has input with the class level Type argument
+class<T>
+public void insert(T data) -> this method will not be allowed to call as it takes argment as data/ class level argument
+method level generic type is allowed but not class level  
+Why list contais method take Object
+since it is safe method and do not mutate the list
+for wildcards it is safe , in case we had give contains(E e) then for wildcards this method wont compile
+hence object is kept and not class level generic type E
+but add method can mutate and is not risk free for wildcards
+so to force compiler to nto allow this method E e is added as argument so that wildcard code wont compile for this method call
+
+
+- Generics supports type safety at compile time
+- Static methods do not get class level generic type and hence are very good use case for method level generic type declaration
+  static methods, constructors and instance methods all can declare generic types
+  they can be used in method parameter type, return type and even method local data type
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+in case we are using method generics then type inference is automatic to detect argument type
+a. if T is passed through method parameter thatn type inferred is the same data type
+b. if not passed it will get inferred to client code reference variable  
+
+- in method/constructor generics types the type declaration happens just before the returntype declaration of method
+
+- Java generics provides invariance
+  List<Number> = new ArrayList<Number> but wont compile for List<Number> = new ArrayList<Integer>
+  options to extend invariance
+  a. bounded/unbounded wild cards: this works but mutating methods(methods that takes arguments as class level geneic data types) 
+     are not allowed for safety
+  b. <T extends Number> : method level generics , provides covariance but can cause runtime classcastexception	 
+  
+- Rules/Restrictions
+a. <? extends A> <? super A> works fine
+   in extends we can pass A object as well as its children but can not invode methods that type argument of class level generic type
+   However for read methods like .get() we can cast directly to A and use that specific methods instead of Object class casting
+   in <? super A> we can pass  argument as object A , its parent or Object() 
+   inside method we can call add/mutate methods bt with oly new A() , can not be Child of A or parent of ArrayList
+   But during get call we can cast only to Object unlike extends case: as otherwise it can cause classcastexception at runtime
+   
+b. <T extends A> works but with no type safety
+c. <T super A> is illegal
+d. <T extends A & B> works but provided argment should implement/extend both
+e. <? extends A & B> is illegal   
+
+-> since compiler removes LIST<Book> to List
+  if we have 2 methods one having List<String> and other List<Integer> or even List raw compiler considers them same
+  and hence not a valid overload causing compiler error
+  eg:
+  	private static void fake1(List<String> input) {
+
+	}
+
+	private static void fake1(List<Integer> input) {
+
+	} // these are same for compiler and hence will give compiler error
+	also same for 
+		private static void fake1(List<String> input) {
+
+	}
+
+	private static void fake1(List input) {
+
+	}
+	
+-Recommendation from effective java	:
+a. if method is mutating the list/generic class: use super
+b. if method is reading generically : use extends
+c. if reading and writing both: use exact T type so that there is no issue at runtime
+
+Jobs done by compiler for generics
+a. Type Erasure
+b. compile type safety
+c. Type inference
+d. implict cast
