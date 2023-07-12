@@ -1,0 +1,38 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Java completed 25th birthday in 2020 and still java is very very rock solid, reliable and stable
+- Even Code written in jdk 1 can be executed using jdk 17 without recompiling
+  eg: take .class compiled using jdk1 and run using jdk 17 it still works same with jar
+      created jar using jdk1 but running java -jar using jdk 17
+  This is one of the main reason for java's enterprise/production success
+  Version of java can be upgraded/downgraded without much hassle : backward and forward compatibility
+
+- During Relase of jdk8's era new version used to come after years like 2-3 years and even more
+  but now a new release cycle is used of 6 months now
+
+- Java new Version evolution happens to add new features as well as enhance performance, space,security and ease of usage
+
+- Earlier java had feature driven release cycle causing huge time for next version release
+  but after release of jdk 10 release cycle is based on time
+  ths will ensure no postponing of releases like jdk 10 due to huge feature modules
+  eg 3 features were planned but 2 were complete and hence these 2 will release and 3rd feature can wait for next cycle
+  adds rapid inovation + no postponing of release
+- now we have 2 releases per year : march and september
+- now the versioning of each jdk version contains release date along with jdk release version 
+
+- each release can be long term supported or non long term supported
+  plan is to have LTS release after every 3 years
+  LTS means java will support this enterprise version until a new LTS is launched
+  so we can have version migratio every 3 yearsor n years which is planned for next LTS release
+
+- Starting from jdk 11 Oracle JDK is paid to be used in production but free for local development and playground  
+- Oracle also provides openjdk which is free even in production
+  there is another open source community version aka adoptopenjdk this is also free in production
+  other providers are amazon correto, azul zulu, ibm, redhat,sap etc`
+- after jdk 17 release in septmeber 2021 LTS support release cycle is moved to 2 years instead of 3 years
+  also there is  new licence introduced using which we can use versions >=jdk 17  free even in production
+  but subject to conditions mentioned in the license. Open jdk remain free with 6 months support as usual
