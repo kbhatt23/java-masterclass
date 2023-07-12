@@ -36,3 +36,43 @@ om shree sita rama lakshman hanuman
 - after jdk 17 release in septmeber 2021 LTS support release cycle is moved to 2 years instead of 3 years
   also there is  new licence introduced using which we can use versions >=jdk 17  free even in production
   but subject to conditions mentioned in the license. Open jdk remain free with 6 months support as usual
+
+=============== JDK 9 Features================  
+- Java provides garbage collectors for automatic memory management so that developer need not do it
+- G1 is default Garbage collector in jdk 9 before that it was CMS
+  using G1 garbage collector we can configure customized pause time
+- G1 G.C seggregate the heap into multiple regions based on size of heap and number of regions
+  it identifies each of these regios as eden, survivor and old
+  it calculates the density of these regions  
+  
+- Reason of compact strings
+  In Java strings are stored in form of char[]
+  each charachter[] index stores 2 thing one is characther type(unicode like if it is utf-8 or utf-16) 
+  and other actual charachter  hence size of each charachter is 2 byte
+  Important observations were made by jdk team using multiple heap dumps of projects
+  a. Strings in project mostly uses non special charachters so why need unicode type 
+  b. around 30 percent of the heap memory used is char[] from strings
+  
+  if we can compact string char[] : each char to be 1 byte by remocing the ubnicode type header
+  we can save huge amount of space as 30 % of total heap is char[] from string
+  This feature is known as compact string : introduced in jdk9
+  Using this java uses byte[] to store string instead of char[] hence saving huge memory and have better performance
+  Even Stringbuilder and Stringbuffer uses compact strings
+  
+- Benefits of compact string
+  a. memory footprint reduction in string and strinbuilder/buffer classes hence huge heap memory is saved
+  b. less freequent G.C as less memory is used
+  c. better performance as byte operations is faster than char operations
+  d. Also notice these changes do not require any change from dev perspective
+    everything is happening under the background  
+	
+- Benefits of indify string concatination feature
+  if we are using str1 + str2 +str3 in single line in jdk 8 it uses append method of Stringbuilder
+  at compile time this feature is done
+  but this direct append is not always good as strinbuilder/buffer have fixed size and it grows based on usage
+  as str2 size can be different it grows during run time and it should be made better
+  also we need to ensure that any new implementation/algo is done at runtime so that we need not to recompile
+  meaning same compliled code in jdk 9 can be made better in jdk 11 or so
+  hence it uses combination of invokedynamic and method handles
+  This feature ensures that stringbuilder size is fixed (calculated by adding size of all strings at compile time)
+  hence no need to grow stringbuilder during append as it is fully capable to store all strings  
