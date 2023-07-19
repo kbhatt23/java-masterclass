@@ -75,4 +75,175 @@ om shree sita rama lakshman hanuman
   meaning same compliled code in jdk 9 can be made better in jdk 11 or so
   hence it uses combination of invokedynamic and method handles
   This feature ensures that stringbuilder size is fixed (calculated by adding size of all strings at compile time)
-  hence no need to grow stringbuilder during append as it is fully capable to store all strings  
+  hence no need to grow stringbuilder during append as it is fully capable to store all strings
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Why we need modularity
+a. Typically in a java alicacation we create class and then package as jar
+one project output is jar as well as it needs to access code present in another jar
+we need to add all the jar in the classpath while running the java app using java command
+if we miss out a jar that will fail only at runtime when that class using code is called: fail very late
+ -> NoClassDefFoundError
+ AKA jar hell
+b. Weak encapsulation: Every public class is visible to other classes even outside jar
+  We can not hide or show a class , if that is needed within jar is fine but not outside the jar
+c. very big monolithic rt.jar: IT contains all the code/bootstrap for internal java API library
+  It was very big and contained everything but not everything was needed in all projects
+ 
+JPMS addresses above issues
+
+- A Module is nothig but collection of packages (package containing code of classes/interfaces and data) 
+
+- Remember JPMS is forward and backward compatible
+  if we have a jar/java project we can add tha using module path or classpath both works
+  but for module path we need module-info.java class and need to remove this for classpath
+  using modulepath way we will get strict encapsulation and security
+  the classpath approach is also known as unnamed module
+  the module will be null for this
+- Features of unnamed modules
+  a. It can be used by adding in classpath and not in module path
+  b. no name is there and class is unnamed module
+  c. Can be used without module-info.java
+  d. It is not secure as all the public classes/interfaces will be visible fully by the user project
+  e. It can openly use code of user module as well as any jdk module fully with no encapsulation
+  
+The above features are very important as we can move classpath dependencies gradually step by step to modular path
+  
+- Automatic Module means when we are not having module-info.java and using java argument with module pathduring runtime
+  it automatically creates a module and that can be used
+  this is only when module-info.java is not added to project then project name becomes name of automatic module
+  while running main class we can give this module path(automatic name)
+  
+- Features of automatic module
+  automatic module can access code from all other modules
+  every package in automatic module is exported
+  IT can be helpful in migration
+  Whenever we create a project/jar with no module-info class it creates automatic module
+  this can be use din client project by adding to module path
+  follow the rules on the nomenclature of how name is defined for such automatic module
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Usage and Features of different modules with scenarios
+a. named module: When we have module-info.java for a project
+   all the security/encapsulation features exist on this in usage as well as exposing
+   remember a named module can not use a jar/project with no modules in classpath
+   only if in the user project module-info does not exist a jar/project can be used in classpath
+b. unnamed module: when we have a project with no module-info 
+    it can use another project with no module-info class by putting in classpath
+	the imported project is added to unknown module
+	All client code can use this and this can use jdk aad client code fully with no modular encapsulation
+c. automatic module: in case client project is already having module-info class
+   we can not add non modular project in classpath we need to add that in module path
+   the name of project/jar is used to derive name of this automatic module
+   client need to add requires in module-info and this can be used with no boundaries just like unnamed module
+   this is used while migration as few jar/project might not be modular and few will be
+   
+- Since internal JDK APIs are encapsulated using modules a lot of internal libraries are hidden
+  they can not be used even thought we try requiring modules,
+  eg sun package which were suggested by java not to use since jdk8   
+  code for sun.* package ued to give warning in compilation and running in jdk 8
+  but now since jdk APIs are encapsulated using modules
+  these are not exported and hence wont compile and run using version > jdk9  
+  -> We can solve this issue by taking help of jdeps tool which tells what all module dependency is there for a project
+   it tells all the warning and providews suggestions like which class can not be used other than sun.* package etc  
+ 
+- Jlink or Jlinker is a command line utility present in jdk home/gin directory where java is installed
+  Using this we can create custom JRE based on specific module we need and ignore which is not needed
+  compact JRE = better space utilization + fast startup + faster class loader + Better JVM G.CMS
+- Steps: Create Code and modules -> Compile -> Create Custom JRE based on modules -> run using custom JRE  
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+=============== JDK 10 Features================
+a. Method Local Variable Type Inference: Write Clean and Clear reading code
+b. Optional orElseThrow method
+c. Collections new unmodifiable map API
+d. Application Class Data Sharing:
+   Helps in reducing JVM startup time, reduce memory footprint
+   -> It shares the classes metadata across multiple JVM instances
+e. improved docker container awareness: bugfix in JVM
+
+- Meaning of Type Inference : Compiler should be able to infer/judge data type
+  evolution of type inference in java
+  JDK7: introduction of type inference in generics: compiler can infer type from left side
+  JDK8: in lambda the type of input to lambda expression can be inferred form left hand side variable declaration type	
+  JDK10: method local variable type can be inferred from the initialized value from the right hand side
+- Remember introduction of local variable type inference does not make java a dynamically typed language
+  It is still statically type as compiler infer type from right and insert the same in the byte code instruction
+  
+Type inference can not be used in
+a. Class level field type
+b. Method return Types
+c. Method Parameter Type
+d. Constructor Parameter
+e. catch block variable declaration
+
+- Remember that var is not reserved keyword so we can have a variable with name var
+  , Also note that we can not have seperate declaration and initialization lines of code
+   we must initialize and declare in same line of code  
+   
+- If we use var in declaration then all the variable names are inline to same column
+  making sure of more readability   
+  		//below is bad because of performance
+//		byte count = 1; // stored in byte will be space efficient 
+		var count=1; //int takes more space
+- Good Case is to use var when the data type name is very big and it is guranteed to be of right hand side
+  do not use this if code readability is reduced or it is not giving advantage in code readability		
+  Also note var inference is best used when variable name is chosen properly
+  Be Careful while using var for generic collections , better to use strict types here
+  as while using var it takes it as object defeating the purpose of generics compile time type safety
+  
+- Java architechts are planning to deprecate get method in optional
+  IT is because if item is null get method throws exception
+  a lot of developers misued it thinking no exception will come but null object can be receieved
+  this was a mistake admitted by java architecht to have get method throw exception
+  so in future it will be deprecated and we can use orElseThrow method which is same as get
+  but method name is more sensible and clean  
+
+- We have below features in collections
+a. copy constructor: we can pass any collection and get any collection
+  however both will be deep copy, adding/modifying/removing in one wont reflect in other
+  but the copy collection will be modifiable
+b. Collections.unmodifiable
+   Takes collection and create read only view of that collection
+  from read view can not add/delete/set or modify
+  but on the main collection we can add/delete/set and that reflects on the read view
+c. List/Set/Map copyOf static factory method copyOf takes collection as input return unmodifiable collection
+   from read view can not add/delete/set or modify
+   but from main collection we can modify but wont reflect on read view   
+   
+- Application class data sharing 
+  This feature is not very common but very useful if we need to have reduced startup time of applications ruinning on JVM
+  CDS or class data sharing was introduced in jdk5 
+  -> where bootstrap oob jdk classes once loaded is kept on cache, in case another jvm instance starts up in same machine
+    -> that jvm machine can use these already loaded classes and hence reduces startup time
+  Application class data sharing allows CDS to cache even application code
+   like 3rd party libraries, our application code, imported module code etc
+  so when a new JVM instance is loaded in same host these many classes metadata is shared and hence
+   -> reduces memory footprint
+   -> reduces startup time
+  Specialy useful in cloud orchestrator like k8s where multiple pods of same app might be running in same node machine   
+  meaning it saves startup time for multiple app running on sampe machine + if there is a restart then restart startup time will be faster
+  Remember the class instances(java.lang.class) represented as class meta data is stored in meta space of jvm
+  So the applicatin class data sharing means sharing of this metaspace area among multiple instance of JVM in the same host machine
+
+- Note Class Data Sharing was there since jdk 1.5
+- Steps to enable Class data sharing pass below flag whilerunning java command
+  Step a. java -Xshare:dump
+  by default it select a file JAVA_HOME/lib/classlist  where all names of classes are given for which CDS must share cache
+  for these bootstrap classes(code jdk classes) only metaspace info will be cached and shared
+  the output of above step will be: JAVA_HOME/bin/server/classes.jsa
+  step b. java -Xshare:on -Xlog:class+load MainClassName
+  
+- Steps to enable Application Class data sharing pass below flag whilerunning java command
+  Step a. java -Xshare:off -XX:+UseAppCDS -XX:DumpLoadedClassList=app.lst -cp app.jar MainClassName
+  This step loads all the application+imported modules/library into the dump file app.lst
+  Step b. java -Xshare:dump -XX:+UseAppCDS -XX:SharedClassList=app.lst XX:SharedArchiveFile=app.jsa -cp app.jar MainClassName
+  This step dumps all the bootstrap classes + step 1 dump files's metatdata to shared metaspace cache
+  Step c. java -Xshare:on -XX:+UseAppCDS -XX:SharedArchiveFile=app.jsa -cp app.jar MainClassName
+  This starts the app + uses app and boptstrap loaded class metadata from the cache
