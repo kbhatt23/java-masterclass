@@ -1,0 +1,8 @@
+#!C:\Program Files\Java\jdk-11.0.16.1\bin\java --source 11
+public class ShebangScriptDemo{
+	public static void main(String[] args){
+		System.out.println("jai shree sita rama lakshman hanuman");
+	}
+}
+
+

@@ -32,7 +32,7 @@ om shree sita rama lakshman hanuman
 - Starting from jdk 11 Oracle JDK is paid to be used in production but free for local development and playground  
 - Oracle also provides openjdk which is free even in production
   there is another open source community version aka adoptopenjdk this is also free in production
-  other providers are amazon correto, azul zulu, ibm, redhat,sap etc`
+  other providers are amazon correto, azul zulu, ibm, redhat,sap etc
 - after jdk 17 release in septmeber 2021 LTS support release cycle is moved to 2 years instead of 3 years
   also there is  new licence introduced using which we can use versions >=jdk 17  free even in production
   but subject to conditions mentioned in the license. Open jdk remain free with 6 months support as usual
@@ -247,3 +247,135 @@ c. List/Set/Map copyOf static factory method copyOf takes collection as input re
   This step dumps all the bootstrap classes + step 1 dump files's metatdata to shared metaspace cache
   Step c. java -Xshare:on -XX:+UseAppCDS -XX:SharedArchiveFile=app.jsa -cp app.jar MainClassName
   This starts the app + uses app and boptstrap loaded class metadata from the cache
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Before JDK 10 Java JVM was not aware that it is running on docker and hence no specialization
+  So what used to happen is that if docker container is given a specific max memory jvm used to ignore it
+  jvm was directly checking host machine for the memory and hence it was overflowing and causing docker container restart
+  from jdk 10 JVM if running in docker (java flag is true by default) takes memory consideration from docker container allocated memory only
+
+=============== JDK 11 Features================  
+a. Http Client API : implements HTTP2 for websocket, async and non blocking request and response
+b. local variable synax for lambda parameters: use of var extension in lambda expressions
+c. String API changes: repeat, isBlank, strip and lines methods
+d. Deprecations and Removals: Remember during migrations we must know if old library is deprecated or removed
+    This helps in migration planning
+e. Single File Source code program : write code like scripts and run directly without compiling
+f. Garbage Collectors: Epsilon and ZGC collectors
+g. New APIs for Files and Predicate to write cleaner code
+h. Flight Recorder: Using JMC
+
+New HTTP Client API
+Why
+a. The Existing HTTPURLConnection API is very low level, verbose, non declarative and need lot of boilerplate code
+b. poor mainainance
+c. supports blocking http1 only
+
+Earlier we were using external libraries like okhttp, apache http client, spring resttemplate and Webclient etc
+java Http Client API replaces HTTPURLConnection API 
+ -> Pretty high level
+ -> Fluent Builder pattern
+ -> Less Verbose and hence more maintainable
+ -> Support Websockets, HTTP2(default support) sync and async request and response, also supports HTTP1
+    Also integrates well with reactive programming patterns implemented using Flow API in jdk9
+ -> incubated in jdk9 but is live in jdk 11	
+ 
+- String class added repeat method : meaning same string will be concatenated with existing string n-1 time
+   eg: "#".repeat(2) will result ##
+    "".repeat(6) return empty string and "#".repeat(0) returns empty string
+  Question is why we need this method if we can do this using for loop
+  It is because it uses byte[] which is more performant and have better space utilization  
+  
+- We can not use isEmpty for blank check as it checks length == 0 which will be tru for actual empty string
+  so we need to use trim method and if that is empty than actually the item is blank
+  however since jdk 11 we can use this directly from String class and have better performance
+  Trim method remove all the spaces from beginning and ending
+  remove all spaces from initial to first charachter and then remove spaces starting  from last to end  
+  
+- trim vs strip 
+  trim method has been since beginning and it removes all the starting and ending spaces
+  however it do not consider different charachters like /n /t as spaces and those are retained if used
+  if strip is used it considers these special charachters like /n /t also as to be removable from starting and ending
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Epsilon Garbage Collector is a no op grabage collector 
+  that actually do not collect garbage and clean unused object to clean up free memory
+  so eventually more and more object will take space and unused once will not be freed for memory
+  hence JVM will shut down once all space is exhaushted
+  Can be used in case of performance testing : in case of memory constraint environments we can set max heap memory 
+  and then in this test environment we can analyze load test
+- Use cases of epsilon Garbage collector
+  a. Performance test environment : sometimes G.C pauses can actually give wrong info on the actual software's performance  
+  b. Extremely short lived but high performant applications: To enhance performance we can completely stop G.C
+     since application is very short lived very few objects will be created hence we can stop G.C
+  c. Extremly high performant applications	 
+  
+		byte[] bytes = new byte[1024];
+		
+		for(int i = 0 ; i < Integer.MAX_VALUE ; i++) {
+			//after every iteration the byte array object is free for g.c
+			//if epsilon gc is enabled it wont free up and will have eventual out of memory error
+			bytes = new byte[1023];
+		}
+		
+		System.out.println("Task Completed final bytes: "+bytes);
+
+- ZGC is a scalable , low latency garbage collector
+  -> concurrent G.C meaning app thread and memory deallocation G.C threads are different and run in parrallel	
+  Remember G.C causes pause but this is very efficient max pause time is 10 ms
+  even for higher heap size the pause time is fixed to be max 10 ms
+  Can handle huge size of heap sometimes even in TeraBytes
+  
+- Since JDK 11 multiple enterprise level modules are removed 
+  eg: jaxb(xml object mapper) , jax-ws(soap based web services) , corba, JTA
+  these modules were removed as these were moved to maven artificatories and were enhanced already to huge level
+  so user whoe is using on enterprise level can use maven.gradle or other artificatories
+  hence removed from java internal modules  
+  
+- Starting from jdk11 the javafx module is removed and is moved out to external provider
+  we can either use their jar or use maven/gradle artifactory and that project is open sourced
+  the open sourced project is known as openjfx
+- Java Applet are completely removed since jdk 11 due to dangerous security issues
+  we can use html css and js to replace such applications  
+	
+- JDK 11 introduced single source file execution
+  we can write multiple classes in single source file and can run without even compiling: good convenience
+  Since no need of compilation it do not generate .class file
+  This is supported only for single source file classes only
+  
+- SheBang is very famous in shell script creation in unix os
+  #! means sharp(#) + bang = shebang
+  in any typcial script file we start the first line as
+  #! /bin/bash or in general #! programming language interpreter path eg" #! /usr/bin/python
+  We know that scripts using bash or python are very famousto write automation steps in unix OS or any OS
+  Hence combination of single source file compile less execution and shebang we canwrite automation script in java
+  meaning we can write automation code that can be ececuted as script eg : /dir/filename.sh
+
+- Steps to create a script based java code
+  a. start the file with #! then path to java installation
+  b. create a class with a main method and write any code needed there for automation script
+  c. save the fle with same class name but no extension
+  Make a note that shebang are scripts that gets executed in linux machines and not windows  
+  using bash in windows we can do the same
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Files class is added with new method readString
+  earlier we could read all lines of file in single string object using new String(Files.readAllBytes());
+  but it is low level we can use readString method to fetch all lines in single string
+  lines and readLines are existing method to get Stream<String> and List<String>  etc
+  each entry representing single line only
+  Also make note that readString and readLines are eager so all file lines will be read and loaded to memory
+    hence these 2 method can cause out of memory error in case the file is very big
+	Stream is lazy and hence it fetches one by one and hence less chance of out of memory error
+  
+  Similarly Files is added with writeString method : it writes whole string to file in one go
+  
+- JFR or java Flight recorder is a profiler tool that generated jvm based metrics in .jsr file
+  to graphically view this and have meaningful analysis in chart form we can use JMC : java mission control
+  it can work directly with jvm but internally will still use JFR  
