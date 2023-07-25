@@ -378,4 +378,61 @@ om shree sita rama lakshman hanuman
   
 - JFR or java Flight recorder is a profiler tool that generated jvm based metrics in .jsr file
   to graphically view this and have meaningful analysis in chart form we can use JMC : java mission control
-  it can work directly with jvm but internally will still use JFR  
+  it can work directly with jvm but internally will still use JFR
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+=============== JDK 1 Features================    
+
+a. CompactNumberFormat: Before JDK12 we had number/currency/date formatting/parsing features but not in compact way
+   one example is twitter/instagram showing number of followers like 10.2 M, 11.6M 
+   i.e in short/compact form + Locale specific based on country
+   like in usa 1k works in usa 100 M etc, in germany same is represented as 1.000,100 Mio respectively
+   Representing numbers in compact form increases the readability and hence can sell products to more customers   
+   
+b. Files new method mismatch to compare equality of 2 files
+ use mismatch method of Files class returns -1 if content byte arrays of files are same
+ or else return the index at which the first charachter is different
+c. JMH micro benchmarking
+d. Shenandoah Garbage Collector
+   It reduces the pause time to minimal by having concurrent sweep and compaction tasks
+   developed by redhat, useful for high responsive applications with less g.c pause time
+
+e. Teeing collector in Streams API
+   Make a note that linux os have teeing features
+   where single input soruce can be added to console as well as multiple files
+   single input data can be processed to multiple operations giving result to multiple outputs to difference output sources
+   Based on the same linux teeing concepts a new stream collector is added in jdk12
+   Same stream of data input can be manipulated by 2 collectors and then these results of individual collectors can be merged
+   basically merged 2 collectors results
+   
+
+f. Preview Features
+  Introduced in jdk12 , it means concept is fully implemented and designed and specified
+  however implementation is not final and may change
+  useful in case of gathering feedbacks from dev
+  release a new feature as a preview , disable by default we can enable it manually
+  java architechts gather feedback from dev and then finally publish in future release
+  a preview feautre might be finalized in future release of might be completely removed in future, hence these features are disabled by default
+  
+  one such example is switch expression which was preview in 12 and 13 and in version 14 it was finalized
+  in new switch feature we can use lambda expression: it adds code readability and no need of manual break statement
+  
+g. String added indent method to indent each line by the passed same space to method
+   String added transform method tat taks a lambda function of Function interface
+   This adds readablity and laziness and reusability of the code: like a fluent builder pattern   
+   
+- Benchmarking is a technique to analye performance of software with different loads
+  so we can use specific algo based on load needs
+- Microbenchmarking means benchmarking to very minute level like analysing a method
+ or read/write specific query in specific d.b/cache  
+- Java provides JMH java Microbenchmarking Harness a tool that can do Microbenchmarking within jvm for multiple methods
+  Before JDK12 this was used as seperate external library imported using maven/gradle/jar
+  but since JDK12 it is added as part of jdk library
+
+- Why we need JMH tool when we can write time difference in code for the mehod to benchmark
+a. JVM must be warmed up so that JIT compilation happens at the same level for different methods to compare method execution time
+b. JVM is smart enough to ignore certain hotspot code : eg a for loop that is not beeing used after the loop
+   JVM understands this bottlenect and ignore to execute this
+   but during method level code written approach it will execute and will get fake extra time in performance test   
