@@ -383,7 +383,7 @@ om shree sita rama lakshman hanuman
 om shree ganeshaya namah
 om shree sita rama lakshman hanuman
 
-=============== JDK 1 Features================    
+=============== JDK 12 Features================    
 
 a. CompactNumberFormat: Before JDK12 we had number/currency/date formatting/parsing features but not in compact way
    one example is twitter/instagram showing number of followers like 10.2 M, 11.6M 
@@ -435,4 +435,92 @@ g. String added indent method to indent each line by the passed same space to me
 a. JVM must be warmed up so that JIT compilation happens at the same level for different methods to compare method execution time
 b. JVM is smart enough to ignore certain hotspot code : eg a for loop that is not beeing used after the loop
    JVM understands this bottlenect and ignore to execute this
-   but during method level code written approach it will execute and will get fake extra time in performance test   
+   but during method level code written approach it will execute and will get fake extra time in performance test
+   
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+=============== JDK 13 Features================    
+Features released:
+a. Reimplemented New Socket API : Old socket API was released in jdk 1 
+b. Dynamic CDS archives: In JDK 10 app CDS was implemented
+   that feature is enahanced to dynamically pick the app classes to be cached
+c. text blocks: add features to support multi line strings
+    It makes ease of use and developer friendly for multi line strings
+    also enhances code readablity for multi line strings
+d. String API changes to support text blocks
+e. switch expression change
+f. ZGC enhancement
+
+- The Socket API was completely rewritten for future goals
+  We must understand why this was done and what it affects
+ A socket is a way of communication b/w 2 machines
+ Using Socket client library we an write code to create socket in client machine
+ similarly we can use socket server library to create socket for exposing programs
+ Legacy Socket API packages: java.net.Socket, java.net.ServerSocket
+ Issues with legacy socket API
+ a. Code was not maintainable: written in java and c and native methods making it tough to understand and maintain
+    These native methods and native locks were not easy to understand and reuse and enhance causing maintainablity issues
+ b. concurrency issues : was using synchronization blocks and method
+   making it slow, poorly performed and other issues like fairness etc
+
+API is Reimplemented using NIOSocketImpl
+benefits
+ a. uses nio libraries which is no blocking hence better performance for bulk operations
+ b. object outside heap support good for bulk data transfer
+ c. better code maintainablity
+ d. uses Locks which are fair and better performed , also not all methods are synchronized
+    making it better performant as individual locks are used based on use case
+ e. Project Loom suppport: loom is one of the biggest development in openjdk,
+     looms uses fibers in jvm which are lighter than threads
+	 in traditional threads one thread correspond to one thread in os
+	 but fibers are lighter and multiple fibers correspond to single thread in O.S
+	 (sometimes 1000s fiber work on single OS thread)
+	 
+- Legacy Socket API is not removed using jvm flag we can still enable it
+
+- Dynamic app CDS is good for ease of usage
+  in jdk 10 there were 3 step process but in jdk 13 we have 2 step process with lesser flags
+  we can use onexist jvm option that directly create jsa file on exit of the jar
+  and then we can use this directly with lesser jvm arguments while running the jar
+- Another advantage of dynamic app CDS is that it support oob class loaders as well as custom class loaders
+  app cds in jdk 10 only support oob class loaders only  
+
+- Text block is a preview feature in jdk 13
+  since a preivew feature is for feedback and it can change,  removed or be permanent based on feedback
+  not suggested to use in production
+  eg:
+  String address = "c23 Fix Apartment\n"+" Sachi Road\n" + "Delhi"
+  remember we might forget new line char
+  text block is represente with """ and \n comes on its own when a there is a new line in string
+eg: """c23 Fix Apartment
+     Sachi Road
+	 Delhi""" will result to same
+	 it increases readability and also is more developer frient in terms of ease of usage
+	 good use case is
+	 json, html where we need to use escape charachter for \"name\":\"kanishk\"
+	 it is because formatting indent is based on how we define text block
+- in jdk 15 text block is permanent feature
+
+if a file exist with below content
+\"jai shree ganesha\"
+
+\"jai\tumamahesh\"
+\"jai shree sitarama lakshman hanuman\"
+
+
+\"hello\tworld\"
+if we use File.lines it will not convert escape charachter to unicode
+hence result will be exact same  like first line: "jai shree ganesha"
+instead it will be \"jai shree ganesha\"
+we can use translateEscapes method
+
+- String class is added with formatted method which is same like static method but this is instance method
+  also remember even text blocks work well with string format like use of %s
+  
+- In jdk12 switch expression is made preview feature and in jdk14 it is made permanent
+
+- ZGC introduced in jdk 11 was very fast and have 10 ms or similar pause time
+  but even after gc is done that space is not given back to O.S even in no use case
+  it is always assigned to jvm for the fact maybe in future it can be useful
+  but in jdk 13 unused and gced memory(RAM) can be assigned back to O.S to do other task
