@@ -618,7 +618,7 @@ d. Sealed Classes and interfaces
   In Java we can use inheritance to resuse and have polymorphic behavior with substitutionability
   but sometimes we want to restrict class a to be extended by b,c and d only other classes should not be able to extended
   options
-  a. make class finall : but it will restrict to have 0 children thats not what we want
+  a. make class final : but it will restrict to have 0 children thats not what we want
   b. private constructor + nested classes : makes sense but sometime code readability is bad
   c. package private: works well but what if we want other packages to also be able to extend
   Sealed class is best suited for above use case introduced in jdk 15
@@ -636,3 +636,6 @@ e. G.C Enhancement , deprecations and removals
    already in jdk14 was made to be used in windows and mac also
    Shenandoah G.C is also made permanent
    but G1 is still default G.C
+   
+=============== JDK 16 Features================
+
