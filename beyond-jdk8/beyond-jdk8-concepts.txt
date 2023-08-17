@@ -524,3 +524,64 @@ we can use translateEscapes method
   but even after gc is done that space is not given back to O.S even in no use case
   it is always assigned to jvm for the fact maybe in future it can be useful
   but in jdk 13 unused and gced memory(RAM) can be assigned back to O.S to do other task
+  
+  
+=============== JDK 14 Features================     
+a. switch expression
+   -> Switch Expression was added in jdk 12(review feature) and now in jdk 14 it is permanent and hence can be used in production
+   in traditional switch case lets see example
+   we have switch and cases where we are doing computation in each case and then assigning a value to a method variable
+   in this case we will have cases calling methods and method variable is assigned a value
+   a. We need to break manually or else fall through happens
+   b. for same logic for different case we need to kee them togehter with break only at last case
+    these 2 things caused issue with code readability
+	for experienced developer it was fine but not so much for new developers
+	
+ Hence switch expression was introduced
+  a. we can assign the switch expression directly to variable
+     meaning in each case we need not to assign the variable
+  b. uses lambda expression format
+  c. no need of break as there is no fall through  
+  d. multiple cases can be combined using comma
+  e. lambda arrow is used instead of colon
+  f. Also Remember switch expression always must have default expression or else compiler complains
+  these features adds  a lot of readability
+  g. Remember that we can not have -> and : both in the same switch case
+ 
+- Yield was added in jdk13  in jdk 12 it was break; 
+   
+b. helpful NullPointerException
+  -> NullPointerException is a RunTimeException and hence never be try catch
+     instead we should do validations so that this never occurs : but that can add a lot of if conditions
+	 adding this many if else condition can cause bad code readability
+	 if this flag is enabled for helpful NullPointerException
+	 it can actually tell which method or variable was actually null that caused null pointer exception
+	 by default it is disabled
+	 This is helpful in debugging and hunt down NullPointerException on production but have a very slight performance issue
+c. Garbage collectors improvements
+   G1 the default G.C is impreoved in terms of performance
+   Concurrent mark and sweep G.C was earlier deprecated and now completely removed
+   ZGC (less pause time 10 ms even in case of tera bytes of heap size) is now added for windows and machine
+   earlier it was for linux only
+d. Records
+   This is preview feature and hence not suggested to use in production
+   To use this we need to enable preview feature in eclipse/sts/intellij or java compiler argument
+   As a Java developer we have written DTOs which are nothing but data carrier
+   it has fields initialzed with constructor and setters are not there
+   since these are data carriers it should be immutable and hence
+   all fields should be final private , initialized in constructor and no setters but getter
+   should have hashcode, equals and tostring : writing self for these boilerplate is not easy
+   IDE can help but with more fields comming or fields getting removed writing and maintaining this is not easy
+   so lombook came but using records we can handle immutability + DTO easily
+   Goal of records is modelling data as data with no bolierplate code to bve written
+   It reduced boilerplate code , adds declarativeness shows intention that this is data carrier class
+   hence code readability is increased and verbosity is reduced   
+e. Pattern Matching for instanceof
+   Again a preivew feature in jdk14
+   To use this we need to enable preview feature in eclipse/sts/intellij or java compiler argument 
+   When we use instance of inside true if condtion we actually do downcast
+  this is obvious and hence redundant code is written
+  this redundant code can reduce code readability and during copy paste we might downcast to wrong type
+  obvious reduces readability adds verbosity and chance of error is there in copy paste
+  This is permanent feature in jdk 16
+  Also used in future switch expression  
