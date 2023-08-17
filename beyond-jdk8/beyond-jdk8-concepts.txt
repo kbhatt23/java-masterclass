@@ -585,3 +585,54 @@ e. Pattern Matching for instanceof
   obvious reduces readability adds verbosity and chance of error is there in copy paste
   This is permanent feature in jdk 16
   Also used in future switch expression  
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+  =============== JDK 15 Features================  
+
+a. Text Block Enhancement (introduced in jdk 12 as preview feature)
+   -> Starting jdk 15 it is made permanent and hence can be used in production
+   Text Blocks starts with triple quotes and end with same
+   We can not add content of text block in same line as starting tripple quotes delimeter
+   however content is allowed in last line  last line"""; //allowed in last line -> compiles fine
+   if ending """ is next to the content then an extra line is added with empty chars
+   Remember that the text blocks are also interned meaning usable in string literal pool cache
+   It is bad choice to use text block for single line string, better use basic string literal for that
+   
+	//text block benefit is code readablity
+	//as part of clean code one line should not exceed a limit of width
+	//this allows dev to read more code without scrolling to right and hence adds code readability
+
+	//but what if we need not to use text blocks but actually append in single line
+	//introducing escape charachter in text block in jdk 15
+	use / at end of each line of text block and it wont add \n on its own
+	and all lines will be appended to single line
+	other escape charachter allowed in text block is \s hence only 2 escape charachters are allowed
+	'\' and '\s'
+b. helpful NullPointerException enhancement  (introduced in jdk 14 as preview feature)
+   now in jdk 15 it is a permanent feature
+c. Records enahancement
+   In JDK15 records can be method local aand in certain use cases it adds encapsulation
+d. Sealed Classes and interfaces
+  In Java we can use inheritance to resuse and have polymorphic behavior with substitutionability
+  but sometimes we want to restrict class a to be extended by b,c and d only other classes should not be able to extended
+  options
+  a. make class finall : but it will restrict to have 0 children thats not what we want
+  b. private constructor + nested classes : makes sense but sometime code readability is bad
+  c. package private: works well but what if we want other packages to also be able to extend
+  Sealed class is best suited for above use case introduced in jdk 15
+  It is still a preview feature
+  Syntax
+  a. In iterface or super class we need to add public sealed class/interface Name permits Child1,Child2{
+  }
+  b. The children classes must be final and only Child1,Child2 are allowed to implement/extend
+    for others it gives compilation error on implement/extend
+	one logic is the children class must be either final or non-sealed
+	for final children another class can not extend it
+	but for non-sealed children other classes can extend it
+e. G.C Enhancement , deprecations and removals
+  ZGC is now a permanent feature + several enhancement like increasing max heap size to 16 tb
+   already in jdk14 was made to be used in windows and mac also
+   Shenandoah G.C is also made permanent
+   but G1 is still default G.C
