@@ -639,3 +639,156 @@ e. G.C Enhancement , deprecations and removals
    
 =============== JDK 16 Features================
 
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+a. Records in debth with numeous examples to build confidence
+   Previewed in jdk 14 and jdk 15 is not permanent in jdk 16
+ 
+   Behind the Scene is similar to that of enum
+   Compiler creates a final class with record name that extends java.lang.Record class
+   add a single constructor with decription provided
+   no arg constructor is not created
+   private final fields with same name as that of descriptin is created
+   initialization happens in constructor
+   no setter but public getter methods with same name as that of field
+   hashcode , equals and tostring methods are provided by compiler too
+   in short record gets compiled into a final class that extends java.lang.Record class just like enum type
+   Rules:
+   -> No Arg Constructor wont be created
+   -> Record can not extend another class as it is already extending Record class
+   -> it can implement n interfaces just like enum we have last 2 rules
+   -> Just like enum type, a Record can have constructors too, if no constructor is added a canonical constructor is added
+      in canonical constructor the field declared will be parameter and it will be copied to private final field automatically
+	  however we can overload and can create our own constructors, 
+	  field declared will have to be initializedby us by calling canonical constructor created by compiler
+   -> we caa override toString , hashcode, equals method auto created by compiler
+   -> A Record can act as key of hashmap as compiler provides hashcode and equals methods automatically
+      hence using record we can merge multiple classes and make composite key of map easily
+  Good use cases of records
+  a. DTOs
+  b. return multiple objects: merge in same record, easy to read
+  c. have composite key in map, merge classes in one with absolutely no code written,
+      hashcode equals tostring , getter all provided by compiler  
+
+b. Stream Api enahancement : mapMulti , comparison with flatmap
+  
+   flatMap and mapMulti both works for one to many options but have different use case
+   a. in case of flatMap for each element a stream will be created containing all the items based on map transformation
+      but in case of mapMulti a single stream is created and mutated for each iteration
+   b. flatMap takes all the element from one to many but mapMulti have flexibility of 0 to all elements
+    eg use case: we have employees list and we have hobbies list for each employee
+	then using flatMap we will create n streams where n = number of employees
+	meaning all the hobbies will be added
+	in case of multiMap: we create single stream and is mutated by each iteration of employee
+	meaning we have the flexiblity of using one or all hobbies
+	eg: find all the hobbies starting with letter a 
+	this can not be done using flatmap as filter will be based on employee and not hobbies
+    so remember to use flatMap when we need all the hobbies
+	but use multiMap when we need 0 - all hobbies based on logic
+	
+	toList method in stream api: This is same like Collectors.toList()
+	but adds readability also one feature it adds
+	the final List from toList method of stream is unmodifiable meaning we can not add,update,remove etc
+	but add,update,remove etc can be done for Collectors.toList()
+   
+
+d. sealed types and records
+e. strongly encapsulated jdk internals : to enhance security of jdk
+f. new packaking api to package java application
+g. warning for value based classes: laid foundation for future changed in jdk   
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+c. pattern matching for instanceof
+  It was a preview feature since jdk 14 now in jdk 16 it is a permanent feature
+  
+Note: We can use Record and sealed interface/classes together
+   A Record is a final class hence no once can extend it
+   but it can extend sealed interface's permit types 
+   hence field constructor, getters and hashcode equals tostring will be provided by jdk compiler   
+   summary: 
+   a. Record class is final so no one can extend it
+   b. Record class can not extend but implement as it already extend java.lang.Record class
+   c. Since Record class is final it can be children of sealed class
+      remember child of sealed class/interface is either final or non-sealed
+
+
+
+===============Tips on jdk migration===================
+a. update the maven plugin to support new jdk version like 17 : build tools and plugins
+   in this step do following
+   a. update the java version to 17
+   b. update the maven plugin and other plugin versions as per jdk 17
+     or update the gradle version and other plugins version as per jdk 17 support
+   c. use correct IDE that supports jdk 17 version as sts few version spport till jdk 15 only
+b. spring/springboot compatiblity version based on new jdk version :
+   -> some jdk version require minimum spring boot version to work with
+   demo will be done for a sample spring boot app to upgrade to jdk 17   
+c. check dependency compaiblity like hibernate version that is compatible with latest jdk version like 17
+   update the versions of dependencies that support new version of jdk 17
+d. fix migration issues like issue with jaxb : used in demo  
+   inspring boot we might have to create @Bean and @Configuration in new way of jdk 17 
+   
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- Different developers working for tools,frameworks, apps, webb apps are using jdk internal libraries
+  like sun.* package which was meant to be used by jdk internally
+  this result in low encapsulation have security issues and also reduces maintainablity
+  jdk implementors were restricted to modify these package in fear it might break for these external developers
+  internally they can modify but for external direct dev it was making it a headache and reduces maintainablity
+
+- Even the private methods/constructors/fields were forecfully used using reflection
+  to tackles these modules were introduced in jdk9
+  however using a flag --illegal-access it can be allowed freely
+  using these flags even internal libraries can be used again causing the risk
+  this was done for migration only
+  in jdk 16 few apis like keystore is made more encapsulated
+  it is declared with opens and fixed package which is internal to jdk
+  also exports is done to specific internal packages
+  hence import can be done in fixed modules, and only fixed module can use reflection to use these internal libraries
+  we as a dev can not now either import or even use reflection to code due to these jpms restrictions
+
+  however before jdk 16 it was still possible to use them using flag --illegal-access
+  now in jdk 16 this flag can not be updated at all and is deny always
+
+- Using tool like jdeps and maven we can identify all th depending modules/packages
+  even shows what all internal libraries are used
+  so before migrating we must use public apis  
+  Good approach will be to use jdeps and identify what all internal libraries are used
+  migrate them before migrating to jdk 17 as now the flag --illegal-access is removed
+  and for new apis always use public facing apis only which are actually open or export correctly using jpms module-info.class
+  
+- JDK 16 introduced jpackage
+  it is a packaging tool where we can provide jars and then it creates native executable files
+  somewhat similar to how graalvm create exe/bin os specific native file to be executed
+  this way even java need not to be installed within the machine
+  this is self contained package  
+  
+=============== JDK 17 Features================
+Long term support
+released on september 2021
+
+a. Sealed Class/interface feature is made permanent with no extra feature added since its firt preview in jdk 15
+b. Strongly encapsulated internal jdk library
+   illegal-access vm argument is completely removed now, earlier(jdk 16) value of this was not changeable by argument
+c. Removals and Deprecations
+d. Pattern Matching to switch case
+   we can use switch expression based on instance of type and not value
+   lambda option is useed
+   for more than one line yield is used
+   default is mandatory
+   Pattern matching is very good use case in functional programming languages
+   as it enhances code readability and reduces verbosity and reduces line of code and is more concise
+   it is still enhancing and evolving so more features will use pattern matching
+   
+   Remeber that the pattern matching works for switch expression and switch case both
+   now in switch case even object can be compared
+   earlier only byte,short,char,int,Wrapper Integer,Charachter,String and Enum was allowed
+
+- Future of java
+ a. Project Loom
+ b. Project valhala
+ c. Project panama : way of java using native code, easy access to java dev to use native library code easily. 
